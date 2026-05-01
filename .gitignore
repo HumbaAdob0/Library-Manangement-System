@@ -1,0 +1,9 @@
+.vs/ 
+*.slnx 
+*.suo 
+*.user 
+bin/ 
+obj/
+desktop.ini
+Thumbs.db
+.DS_Store
