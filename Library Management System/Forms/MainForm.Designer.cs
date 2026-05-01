@@ -1,6 +1,6 @@
-﻿namespace Library_Management_System
+namespace Library_Management_System.Forms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -24,14 +24,14 @@
 
         /// <summary>
         ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        ///  the contents of this method by the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Text = "Form1";
+            Text = "Library Management System";
         }
 
         #endregion
