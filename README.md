@@ -1,158 +1,422 @@
 # Library Management System
 
-A Windows Forms application for managing library books and members, built with .NET 10 following best practices for layered architecture.
+A comprehensive Library Management System built with **C# WPF** following the **MVVM (Model-View-ViewModel)** pattern. This application manages library operations including books, patrons, transactions, fines, and reporting with a modern Material Design interface.
 
-## Project Structure
+## 🚀 Quick Start
 
-```
-Library Management System/
-├── Forms/                          # User Interface Layer
-│   ├── MainForm.cs                # Main application window
-│   └── MainForm.Designer.cs       # Auto-generated form designer code
-├── Models/                         # Domain Models
-│   ├── Book.cs                    # Book entity model
-│   └── Member.cs                  # Member entity model
-├── Services/                       # Business Logic Layer
-│   ├── BookService.cs             # Business logic for book operations
-│   └── MemberService.cs           # Business logic for member operations
-├── Data/                           # Data Access Layer
-│   ├── IRepository.cs             # Generic repository interface
-│   ├── BookRepository.cs          # Book data repository
-│   └── MemberRepository.cs        # Member data repository
-├── Program.cs                      # Application entry point
-└── Library Management System.csproj  # Project file
+```bash
+# Clone the repository
+git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
+cd "Library Management System"
 
+# Restore packages
+dotnet restore
+
+# Build the project
+dotnet build
+
+# Run the application
+dotnet run
 ```
 
-## Architecture Overview
+**Default Login:**
+- Username: `admin`
+- Password: `admin123`
 
-This project follows a **3-Layer Architecture** pattern:
+## 📋 Prerequisites
 
-### 1. **Presentation Layer (Forms)**
-- Contains all Windows Forms UI components
-- Handles user interactions
-- Communicates with the Business Logic layer
+Before you begin, ensure you have the following installed on your machine:
 
-### 2. **Business Logic Layer (Services)**
-- Contains core business rules and logic
-- Validates data
-- Orchestrates data operations
-- Depends on Data Access layer
+### Required Software
 
-### 3. **Data Access Layer (Data)**
-- Handles all database operations
-- Implements Repository pattern
-- Decouples business logic from data sources
+1. **[.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)** or later
+   - Download and install from Microsoft's official website
+   - Verify installation: `dotnet --version`
 
-## Key Design Patterns
+2. **IDE (Choose one):**
+   - **[Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)** (Recommended)
+     - Community Edition (Free) or higher
+     - Workloads required:
+       - ✅ .NET desktop development
+       - ✅ Desktop development with C++
+   - **[Visual Studio Code](https://code.visualstudio.com/)** with extensions:
+     - C# Dev Kit
+     - .NET Extension Pack
+   - **[JetBrains Rider](https://www.jetbrains.com/rider/)** (Paid, but excellent)
 
-### Repository Pattern
-- `IRepository<T>` interface defines data access contracts
-- `BookRepository` and `MemberRepository` implement data operations
-- Allows for easy testing and switching data sources
+3. **Git** (for version control)
+   - [Download Git](https://git-scm.com/downloads)
+   - Verify installation: `git --version`
 
-### Dependency Injection Ready
-- Services accept repositories through constructor injection
-- Makes the code testable and maintainable
+### Optional but Recommended
 
-## Models
+- **[DB Browser for SQLite](https://sqlitebrowser.org/)** - To view and edit the database
+- **[Windows Terminal](https://aka.ms/terminal)** - Better terminal experience
+- **[GitHub Desktop](https://desktop.github.com/)** - If you prefer GUI for Git
 
-### Book
+## 🛠️ Setup Instructions for Contributors
+
+### 1. Fork and Clone the Repository
+
+```bash
+# Fork the repository on GitHub first, then clone your fork
+git clone https://github.com/YOUR-USERNAME/Library-Manangement-System.git
+cd "Library Management System"
+
+# Add upstream remote to sync with main repository
+git remote add upstream https://github.com/HumbaAdob0/Library-Manangement-System.git
+```
+
+### 2. Install Dependencies
+
+```bash
+# Restore NuGet packages
+dotnet restore LibraryManagementSystem.csproj
+
+# This will install:
+# - Microsoft.EntityFrameworkCore.Sqlite (8.0.0)
+# - Microsoft.EntityFrameworkCore.Design (8.0.0)
+# - Microsoft.Extensions.DependencyInjection (8.0.0)
+# - Microsoft.Extensions.Hosting (8.0.0)
+# - MaterialDesignThemes (5.0.0)
+# - BCrypt.Net-Next (4.0.3)
+```
+
+### 3. Build the Project
+
+```bash
+# Build in Debug mode
+dotnet build
+
+# Or build in Release mode
+dotnet build -c Release
+```
+
+### 4. Run the Application
+
+```bash
+# Run from command line
+dotnet run
+
+# Or run with hot reload (for development)
+dotnet watch run
+```
+
+**Using Visual Studio:**
+1. Open `LibraryManagementSystem.csproj`
+2. Press `F5` to run with debugging
+3. Or `Ctrl+F5` to run without debugging
+
+### 5. Database Setup
+
+The SQLite database (`library.db`) is created automatically on first run with:
+- ✅ All required tables (Books, Patrons, Transactions, Fines, Users)
+- ✅ Default admin user (username: `admin`, password: `admin123`)
+- ✅ Proper relationships and constraints
+
+**To reset the database:**
+```bash
+# Stop the application, then delete the database file
+rm library.db  # On Windows: del library.db
+
+# Restart the application - database will be recreated
+dotnet run
+```
+
+## 📁 Project Structure
+
+```
+LibraryManagementSystem/
+├── Models/                     # Domain entities
+│   ├── Book.cs                # Book entity
+│   ├── Patron.cs              # Library member entity
+│   ├── Transaction.cs         # Checkout/return transactions
+│   ├── Fine.cs                # Overdue fines
+│   └── User.cs                # System users (Admin/Librarian)
+│
+├── Data/                       # Database context
+│   └── LibraryDbContext.cs    # EF Core DbContext
+│
+├── Services/                   # Business logic layer
+│   ├── IAuthenticationService.cs
+│   ├── AuthenticationService.cs
+│   ├── IBookService.cs
+│   ├── BookService.cs
+│   ├── IPatronService.cs
+│   ├── PatronService.cs
+│   ├── ITransactionService.cs
+│   ├── TransactionService.cs
+│   ├── IFineService.cs
+│   └── FineService.cs
+│
+├── ViewModels/                 # MVVM ViewModels
+│   ├── ViewModelBase.cs       # Base class for all ViewModels
+│   ├── RelayCommand.cs        # ICommand implementation
+│   ├── LoginViewModel.cs
+│   ├── MainViewModel.cs
+│   └── [Other ViewModels...]
+│
+├── Views/                      # WPF Views (XAML)
+│   ├── LoginWindow.xaml
+│   ├── MainWindow.xaml
+│   └── [Other Views...]
+│
+├── Converters/                 # Value converters for XAML
+│   └── BooleanToVisibilityConverter.cs
+│
+├── App.xaml                    # Application resources
+├── App.xaml.cs                 # Application startup & DI
+└── LibraryManagementSystem.csproj
+```
+
+## 🏗️ Architecture Overview
+
+This project follows **MVVM (Model-View-ViewModel)** pattern with a clean architecture:
+
+### Layers
+
+1. **Models** - Domain entities and business objects
+2. **Data** - Entity Framework Core DbContext
+3. **Services** - Business logic and data operations
+4. **ViewModels** - Presentation logic and data binding
+5. **Views** - XAML UI components
+
+### Key Design Patterns
+
+- ✅ **MVVM Pattern** - Separation of UI and business logic
+- ✅ **Dependency Injection** - Microsoft.Extensions.DependencyInjection
+- ✅ **Repository Pattern** - Through EF Core DbContext
+- ✅ **Command Pattern** - RelayCommand for UI actions
+- ✅ **Async/Await** - All data operations are asynchronous
+
+## 🧪 Testing
+
+### Manual Testing
+
+1. **Login System**
+   ```
+   Username: admin
+   Password: admin123
+   ```
+
+2. **Navigation**
+   - Test all menu items (Dashboard, Books, Patrons, Transactions, Reports)
+
+3. **Database Operations**
+   - Use DB Browser for SQLite to inspect `library.db`
+
+### Running Tests (When implemented)
+
+```bash
+dotnet test
+```
+
+## 🔧 Development Workflow
+
+### 1. Create a Feature Branch
+
+```bash
+# Update your local main branch
+git checkout main
+git pull upstream main
+
+# Create a new feature branch
+git checkout -b feature/your-feature-name
+```
+
+### 2. Make Your Changes
+
+- Follow the existing code style
+- Use MVVM pattern for new features
+- Add XML documentation comments
+- Keep commits atomic and well-described
+
+### 3. Test Your Changes
+
+```bash
+# Build to check for errors
+dotnet build
+
+# Run the application
+dotnet run
+
+# Test your feature thoroughly
+```
+
+### 4. Commit Your Changes
+
+```bash
+# Stage your changes
+git add .
+
+# Commit with a descriptive message
+git commit -m "feat: add book search functionality"
+
+# Use conventional commit format:
+# feat: new feature
+# fix: bug fix
+# docs: documentation changes
+# style: formatting changes
+# refactor: code refactoring
+# test: adding tests
+# chore: maintenance tasks
+```
+
+### 5. Push and Create Pull Request
+
+```bash
+# Push to your fork
+git push origin feature/your-feature-name
+
+# Go to GitHub and create a Pull Request
+```
+
+## 📝 Coding Standards
+
+### C# Style Guide
+
+- Use **PascalCase** for class names, method names, properties
+- Use **camelCase** for local variables, parameters
+- Use **_camelCase** for private fields
+- Add XML documentation for public APIs
+- Use `async/await` for asynchronous operations
+- Enable nullable reference types
+
+### XAML Style Guide
+
+- Use **PascalCase** for element names
+- Use **camelCase** for x:Name attributes
+- Organize properties: Name, Layout, Appearance, Behavior
+- Use Material Design components when possible
+
+### Example
+
 ```csharp
-public class Book
+/// <summary>
+/// Service for managing book operations.
+/// </summary>
+public class BookService : IBookService
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public string ISBN { get; set; }
-    public int PublicationYear { get; set; }
-    public bool IsAvailable { get; set; }
-    public DateTime CreatedDate { get; set; }
+    private readonly LibraryDbContext _context;
+
+    public BookService(LibraryDbContext context)
+    {
+        _context = context;
+    }
+
+    /// <summary>
+    /// Retrieves all books from the database.
+    /// </summary>
+    /// <returns>A collection of books.</returns>
+    public async Task<IEnumerable<Book>> GetAllBooksAsync()
+    {
+        return await _context.Books.ToListAsync();
+    }
 }
 ```
 
-### Member
-```csharp
-public class Member
-{
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
-    public DateTime JoinDate { get; set; }
-    public bool IsActive { get; set; }
-}
+## 🐛 Troubleshooting
+
+### Build Errors
+
+```bash
+# Clean and rebuild
+dotnet clean
+dotnet restore
+dotnet build
 ```
 
-## Services
+### Database Issues
 
-### BookService
-Provides methods for book management:
-- `GetAllBooksAsync()` - Retrieve all books
-- `GetBookByIdAsync(int id)` - Retrieve specific book
-- `AddBookAsync(Book book)` - Add new book
-- `UpdateBookAsync(Book book)` - Update book details
-- `DeleteBookAsync(int id)` - Delete book
+```bash
+# Delete and recreate database
+rm library.db
+dotnet run
+```
 
-### MemberService
-Provides methods for member management:
-- `GetAllMembersAsync()` - Retrieve all members
-- `GetMemberByIdAsync(int id)` - Retrieve specific member
-- `AddMemberAsync(Member member)` - Add new member
-- `UpdateMemberAsync(Member member)` - Update member details
-- `DeleteMemberAsync(int id)` - Delete member
+### Package Issues
 
-## Getting Started
+```bash
+# Clear NuGet cache
+dotnet nuget locals all --clear
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/HumbaAdob0/Library-Manangement-System
-   ```
+# Restore packages
+dotnet restore
+```
 
-2. **Open in Visual Studio**
-   - Open `Library Management System.csproj` or the solution file
+### Material Design Issues
 
-3. **Build the project**
-   ```bash
-   dotnet build
-   ```
+If icons don't appear:
+1. Clean the solution
+2. Rebuild the project
+3. Restart Visual Studio
 
-4. **Run the application**
-   ```bash
-   dotnet run
-   ```
+## 📚 Technology Stack
 
-## Technology Stack
+- **Framework**: .NET 8.0 with WPF
+- **Database**: SQLite with Entity Framework Core 8.0
+- **UI Framework**: Material Design In XAML Toolkit 5.0
+- **Architecture**: MVVM Pattern
+- **Authentication**: BCrypt.Net for password hashing
+- **Dependency Injection**: Microsoft.Extensions.DependencyInjection
 
-- **Framework**: .NET 10
-- **UI**: Windows Forms
-- **Language**: C# 13
-- **Nullable Reference Types**: Enabled
+## 🎯 Current Status
 
-## Future Enhancements
+### ✅ Phase 1 Complete
+- Core infrastructure
+- Database with EF Core
+- Authentication system
+- Service layer
+- MVVM architecture
+- Login and main window
 
-- [ ] Database integration (SQL Server / Entity Framework Core)
-- [ ] Dependency Injection container
-- [ ] Unit tests
-- [ ] Logging and error handling
-- [ ] Additional forms (Add Book, Add Member, View Books, etc.)
-- [ ] Data validation
-- [ ] Search and filter functionality
+### 🚧 Phase 2 In Progress
+- Book management UI
+- Patron management UI
+- Transaction processing UI
+- Dashboard
+- Reports
 
-## Best Practices Implemented
+## 📖 Additional Documentation
 
-✓ **Separation of Concerns** - Code is organized by responsibility
-✓ **Single Responsibility Principle** - Each class has one reason to change
-✓ **DRY (Don't Repeat Yourself)** - Repository pattern eliminates code duplication
-✓ **Dependency Inversion** - Services depend on abstractions (IRepository)
-✓ **Async/Await** - All repository operations are asynchronous
-✓ **Nullable Reference Types** - Better null safety
+- **[README_WPF.md](README_WPF.md)** - Detailed project documentation
+- **[QUICK_START.md](QUICK_START.md)** - Quick start guide
+- **[CONVERSION_SUMMARY.md](CONVERSION_SUMMARY.md)** - Conversion details
+- **[PHASE_1_COMPLETE.md](PHASE_1_COMPLETE.md)** - Phase 1 completion guide
 
-## License
+## 🤝 Contributing
 
-[Add your license here]
+We welcome contributions! Please follow these steps:
 
-## Contributing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: add some amazing feature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-[Add contribution guidelines here]
+### Contribution Guidelines
+
+- Follow the existing code style
+- Write clear commit messages
+- Update documentation as needed
+- Test your changes thoroughly
+- Keep PRs focused on a single feature/fix
+
+## 📄 License
+
+This project is for educational purposes as part of the Library Management System requirements.
+
+## 👥 Team
+
+**Group 4** - Library Management System Development Team
+
+## 📞 Support
+
+For questions or issues:
+1. Check the documentation files
+2. Search existing GitHub issues
+3. Create a new issue with detailed information
+
+---
+
+**Happy Coding!** 🚀
