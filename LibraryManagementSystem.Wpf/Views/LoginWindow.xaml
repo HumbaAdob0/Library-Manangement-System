@@ -1,0 +1,104 @@
+<Window x:Class="LibraryManagementSystem.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:LibraryManagementSystem.Helpers"
+        Title="Library Management System"
+        Height="640"
+        Width="980"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BeigeBackground}">
+  <Grid x:Name="Root" Margin="24" Opacity="0">
+    <Grid.Triggers>
+      <EventTrigger RoutedEvent="Loaded">
+        <BeginStoryboard>
+          <Storyboard>
+            <DoubleAnimation Storyboard.TargetName="Root"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1"
+                             Duration="0:0:0.4" />
+          </Storyboard>
+        </BeginStoryboard>
+      </EventTrigger>
+    </Grid.Triggers>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1.2*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0"
+            CornerRadius="24"
+            Padding="32">
+      <Border.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#F6F1E7" Offset="0" />
+          <GradientStop Color="#EAD9C7" Offset="1" />
+        </LinearGradientBrush>
+      </Border.Background>
+
+      <Grid>
+        <StackPanel>
+          <TextBlock Text="Welcome back"
+                     FontSize="28"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Library Management System"
+                     FontSize="16"
+                     Foreground="{StaticResource MutedText}"
+                     Margin="0,10,0,0" />
+          <TextBlock Text="Secure access for admins and librarians"
+                     FontSize="13"
+                     Foreground="{StaticResource MutedText}"
+                     Margin="0,22,0,0" />
+        </StackPanel>
+
+        <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="300" Height="220">
+          <Rectangle Width="160" Height="100" RadiusX="20" RadiusY="20" Fill="#FFFFFF" Opacity="0.8" Canvas.Left="120" Canvas.Top="10" />
+          <Rectangle Width="120" Height="70" RadiusX="18" RadiusY="18" Fill="#EFE4D7" Opacity="0.9" Canvas.Left="30" Canvas.Top="30" />
+          <Rectangle Width="140" Height="90" RadiusX="20" RadiusY="20" Fill="#F7F0E7" Opacity="0.9" Canvas.Left="10" Canvas.Top="110" />
+          <Rectangle Width="130" Height="70" RadiusX="18" RadiusY="18" Fill="#E8D8C8" Opacity="0.9" Canvas.Left="160" Canvas.Top="130" />
+        </Canvas>
+      </Grid>
+    </Border>
+
+    <Border Grid.Column="1"
+            Margin="24,0,0,0"
+            Background="{StaticResource CardBackground}"
+            CornerRadius="24"
+            Padding="32">
+      <StackPanel>
+        <TextBlock Text="Sign in"
+                   FontSize="20"
+                   FontWeight="SemiBold" />
+        <TextBlock Text="Use your staff credentials to continue"
+                   Foreground="{StaticResource MutedText}"
+                   Margin="0,8,0,24" />
+
+        <TextBlock Text="Username" FontSize="12" Foreground="{StaticResource MutedText}" />
+        <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,6,0,16" />
+
+        <TextBlock Text="Password" FontSize="12" Foreground="{StaticResource MutedText}" />
+        <PasswordBox Style="{StaticResource BentoPasswordBoxStyle}"
+                     helpers:PasswordBoxHelper.BindPassword="True"
+                     helpers:PasswordBoxHelper.BoundPassword="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,6,0,20" />
+
+        <Button Style="{StaticResource PrimaryButtonStyle}"
+                Content="Sign in"
+                Command="{Binding SignInCommand}"
+                Height="42" />
+
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="#B24836"
+                   Margin="0,12,0,0"
+                   TextWrapping="Wrap" />
+
+        <TextBlock Text="Signing in..."
+                   Foreground="{StaticResource MutedText}"
+                   Margin="0,10,0,0"
+                   Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>
