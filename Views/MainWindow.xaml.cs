@@ -46,46 +46,25 @@ namespace LibraryManagementSystem.Views
 
         private void ShowDashboard()
         {
-            ContentFrame.Content = new TextBlock 
-            { 
-                Text = "Dashboard - Coming Soon", 
-                FontSize = 24,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            ContentFrame.Content = new DashboardView();
         }
 
         private void ShowBooks()
         {
-            ContentFrame.Content = new TextBlock 
-            { 
-                Text = "Book Management - Coming Soon", 
-                FontSize = 24,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            // Load the BooksView user control into the content frame
+            ContentFrame.Content = new BooksView();
         }
 
         private void ShowPatrons()
         {
-            ContentFrame.Content = new TextBlock 
-            { 
-                Text = "Patron Management - Coming Soon", 
-                FontSize = 24,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            // Load the PatronsView user control into the content frame
+            ContentFrame.Content = new PatronsView();
         }
 
         private void ShowTransactions()
         {
-            ContentFrame.Content = new TextBlock 
-            { 
-                Text = "Transaction Management - Coming Soon", 
-                FontSize = 24,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            // Load the TransactionsView user control into the content frame
+            ContentFrame.Content = new TransactionsView();
         }
 
         private void ShowReports()
