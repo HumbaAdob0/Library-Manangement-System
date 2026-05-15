@@ -34,7 +34,9 @@ namespace LibraryManagementSystem
                     services.AddTransient<LoginViewModel>();
                     services.AddTransient<MainViewModel>();
                     services.AddTransient<BookManagementViewModel>();
-                    services.AddTransient<PatronManagementViewModel>();
+                    // Use a singleton for PatronManagementViewModel so the same instance (and its ObservableCollection) is shared
+                    services.AddSingleton<PatronManagementViewModel>();
+                    services.AddTransient<DashboardViewModel>();
                     services.AddTransient<TransactionViewModel>();
                     services.AddTransient<ReportsViewModel>();
 
