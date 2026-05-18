@@ -34,7 +34,7 @@ public partial class MainWindow : Window
             "Books" => App.AppHost.Services.GetRequiredService<BooksView>(),
             "Patrons" => App.AppHost.Services.GetRequiredService<PatronsView>(),
             "Transactions" => App.AppHost.Services.GetRequiredService<TransactionsView>(),
-            "Reports" => CreatePlaceholderView("📊 Reports", "Reports feature coming soon"),
+            "Reports" => App.AppHost.Services.GetRequiredService<ReportsView>(),
             "Users" => App.AppHost.Services.GetRequiredService<UsersView>(),
             "Settings" => CreatePlaceholderView("⚙️ Settings", "Settings feature coming soon"),
             _ => null

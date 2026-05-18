@@ -23,6 +23,7 @@
 
       <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
       <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibility" xmlns:converters="clr-namespace:LibraryManagementSystem.Converters" />
+      <converters:DaysOverdueConverter x:Key="DaysOverdueConverter" xmlns:converters="clr-namespace:LibraryManagementSystem.Converters" />
 
       <Style TargetType="Window">
         <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
