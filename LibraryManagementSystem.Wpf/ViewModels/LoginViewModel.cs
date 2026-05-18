@@ -12,12 +12,14 @@ public class LoginViewModel : ObservableObject
     private string _password = string.Empty;
     private string _errorMessage = string.Empty;
     private bool _isBusy;
+    private bool _isPasswordVisible;
 
     public LoginViewModel(AuthenticationService authenticationService, UserSession session)
     {
         _authenticationService = authenticationService;
         _session = session;
         _signInCommand = new AsyncRelayCommand(SignInAsync, CanSignIn);
+        TogglePasswordVisibilityCommand = new RelayCommand(TogglePasswordVisibility);
         
         // For development/testing - remove in production
         #if DEBUG
@@ -72,11 +74,23 @@ public class LoginViewModel : ObservableObject
         set => SetProperty(ref _errorMessage, value);
     }
 
+    public bool IsPasswordVisible
+    {
+        get => _isPasswordVisible;
+        set => SetProperty(ref _isPasswordVisible, value);
+    }
+
     public AsyncRelayCommand SignInCommand => _signInCommand;
+    public RelayCommand TogglePasswordVisibilityCommand { get; }
 
     private bool CanSignIn()
     {
         return !IsBusy && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        IsPasswordVisible = !IsPasswordVisible;
     }
 
     private async Task SignInAsync()
