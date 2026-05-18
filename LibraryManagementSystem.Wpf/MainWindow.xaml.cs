@@ -31,10 +31,10 @@ public partial class MainWindow : Window
     {
         UserControl? view = viewName switch
         {
+            "Overview" => App.AppHost.Services.GetRequiredService<ReportsView>(),
             "Books" => App.AppHost.Services.GetRequiredService<BooksView>(),
             "Patrons" => App.AppHost.Services.GetRequiredService<PatronsView>(),
             "Transactions" => App.AppHost.Services.GetRequiredService<TransactionsView>(),
-            "Reports" => App.AppHost.Services.GetRequiredService<ReportsView>(),
             "Users" => App.AppHost.Services.GetRequiredService<UsersView>(),
             "Settings" => CreatePlaceholderView("⚙️ Settings", "Settings feature coming soon"),
             _ => null

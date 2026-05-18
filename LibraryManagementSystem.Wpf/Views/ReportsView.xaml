@@ -23,7 +23,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="📊 Reports &amp; Analytics"
+                           Text="📊 Overview"
                            FontSize="24"
                            FontWeight="SemiBold" />
 
