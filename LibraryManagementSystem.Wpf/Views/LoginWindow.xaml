@@ -6,7 +6,8 @@
         Height="640"
         Width="980"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BeigeBackground}">
+        Background="{StaticResource BeigeBackground}"
+        Icon="/Assets/logo.png">
   <Grid x:Name="Root" Margin="24" Opacity="0">
     <Grid.Triggers>
       <EventTrigger RoutedEvent="Loaded">
