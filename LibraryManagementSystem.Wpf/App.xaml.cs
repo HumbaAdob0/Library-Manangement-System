@@ -24,16 +24,25 @@ public partial class App : Application
             .ConfigureServices((context, services) =>
             {
                 services.AddDbContext<LibraryDbContext>(options =>
-                    options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlite(context.Configuration.GetConnectionString("DefaultConnection")));
 
+                // Core Services
                 services.AddSingleton<PasswordHasher>();
                 services.AddSingleton<UserSession>();
                 services.AddScoped<AuthenticationService>();
                 services.AddScoped<DbSeeder>();
 
+                // Business Services
+                services.AddScoped<BookService>();
+                services.AddScoped<PatronService>();
+                services.AddScoped<TransactionService>();
+                services.AddScoped<FineService>();
+
+                // ViewModels
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<MainViewModel>();
 
+                // Windows
                 services.AddTransient<LoginWindow>();
                 services.AddTransient<MainWindow>();
             })
