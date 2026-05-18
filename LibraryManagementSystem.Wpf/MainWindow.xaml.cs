@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 using LibraryManagementSystem.ViewModels;
 using LibraryManagementSystem.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public partial class MainWindow : Window
         _viewModel = viewModel;
         DataContext = _viewModel;
         _viewModel.SignOutRequested += OnSignOutRequested;
+        _viewModel.NavigationRequested += OnNavigationRequested;
     }
 
     private void OnSignOutRequested()
@@ -23,5 +25,38 @@ public partial class MainWindow : Window
         Application.Current.MainWindow = loginWindow;
         loginWindow.Show();
         Close();
+    }
+
+    private void OnNavigationRequested(string viewName)
+    {
+        UserControl? view = viewName switch
+        {
+            "Books" => App.AppHost.Services.GetRequiredService<BooksView>(),
+            "Patrons" => App.AppHost.Services.GetRequiredService<PatronsView>(),
+            "Transactions" => App.AppHost.Services.GetRequiredService<TransactionsView>(),
+            "Reports" => CreatePlaceholderView("📊 Reports", "Reports feature coming soon"),
+            "Users" => CreatePlaceholderView("🔐 Users & Roles", "User management feature coming soon"),
+            "Settings" => CreatePlaceholderView("⚙️ Settings", "Settings feature coming soon"),
+            _ => null
+        };
+
+        if (view != null)
+        {
+            _viewModel.CurrentView = view;
+        }
+    }
+
+    private UserControl CreatePlaceholderView(string title, string message)
+    {
+        var textBlock = new TextBlock
+        {
+            Text = $"{title}\n\n{message}",
+            FontSize = 18,
+            TextAlignment = TextAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+
+        return new UserControl { Content = textBlock };
     }
 }

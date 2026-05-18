@@ -41,10 +41,16 @@ public partial class App : Application
                 // ViewModels
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<MainViewModel>();
+                services.AddTransient<BooksViewModel>();
+                services.AddTransient<PatronsViewModel>();
+                services.AddTransient<TransactionsViewModel>();
 
-                // Windows
+                // Views
                 services.AddTransient<LoginWindow>();
                 services.AddTransient<MainWindow>();
+                services.AddTransient<BooksView>();
+                services.AddTransient<PatronsView>();
+                services.AddTransient<TransactionsView>();
             })
             .Build();
     }

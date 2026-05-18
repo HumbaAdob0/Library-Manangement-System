@@ -154,64 +154,78 @@
               Background="{StaticResource CardBackground}"
               CornerRadius="18"
               Padding="24">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-          <StackPanel>
-            <TextBlock Text="Dashboard"
-                       FontSize="18"
-                       FontWeight="SemiBold"
-                       Margin="0,0,0,16" />
-            
-            <TextBlock Text="Welcome to the Library Management System!"
-                       FontSize="14"
-                       Foreground="{StaticResource MutedText}"
-                       TextWrapping="Wrap"
-                       Margin="0,0,0,12" />
-            
-            <TextBlock Text="Use the navigation menu on the left to:"
-                       FontSize="14"
-                       Foreground="{StaticResource MutedText}"
-                       Margin="0,0,0,8" />
-            
-            <StackPanel Margin="20,0,0,0">
-              <TextBlock Text="• Manage books and inventory"
-                         FontSize="13"
-                         Foreground="{StaticResource MutedText}"
-                         Margin="0,4,0,0" />
-              <TextBlock Text="• View and edit patron information"
-                         FontSize="13"
-                         Foreground="{StaticResource MutedText}"
-                         Margin="0,4,0,0" />
-              <TextBlock Text="• Process checkouts and returns"
-                         FontSize="13"
-                         Foreground="{StaticResource MutedText}"
-                         Margin="0,4,0,0" />
-              <TextBlock Text="• Generate reports and analytics"
-                         FontSize="13"
-                         Foreground="{StaticResource MutedText}"
-                         Margin="0,4,0,0" />
-              <TextBlock Text="• Manage users and system settings (Admin only)"
-                         FontSize="13"
-                         Foreground="{StaticResource MutedText}"
-                         Margin="0,4,0,0" />
-            </StackPanel>
+        <ContentControl Content="{Binding CurrentView}">
+          <ContentControl.Style>
+            <Style TargetType="ContentControl">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentView}" Value="{x:Null}">
+                  <Setter Property="Content">
+                    <Setter.Value>
+                      <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                          <TextBlock Text="Dashboard"
+                                     FontSize="18"
+                                     FontWeight="SemiBold"
+                                     Margin="0,0,0,16" />
+                          
+                          <TextBlock Text="Welcome to the Library Management System!"
+                                     FontSize="14"
+                                     Foreground="{StaticResource MutedText}"
+                                     TextWrapping="Wrap"
+                                     Margin="0,0,0,12" />
+                          
+                          <TextBlock Text="Use the navigation menu on the left to:"
+                                     FontSize="14"
+                                     Foreground="{StaticResource MutedText}"
+                                     Margin="0,0,0,8" />
+                          
+                          <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="• Manage books and inventory"
+                                       FontSize="13"
+                                       Foreground="{StaticResource MutedText}"
+                                       Margin="0,4,0,0" />
+                            <TextBlock Text="• View and edit patron information"
+                                       FontSize="13"
+                                       Foreground="{StaticResource MutedText}"
+                                       Margin="0,4,0,0" />
+                            <TextBlock Text="• Process checkouts and returns"
+                                       FontSize="13"
+                                       Foreground="{StaticResource MutedText}"
+                                       Margin="0,4,0,0" />
+                            <TextBlock Text="• Generate reports and analytics"
+                                       FontSize="13"
+                                       Foreground="{StaticResource MutedText}"
+                                       Margin="0,4,0,0" />
+                            <TextBlock Text="• Manage users and system settings (Admin only)"
+                                       FontSize="13"
+                                       Foreground="{StaticResource MutedText}"
+                                       Margin="0,4,0,0" />
+                          </StackPanel>
 
-            <Border Background="#F6F1E7"
-                    CornerRadius="12"
-                    Padding="16"
-                    Margin="0,24,0,0">
-              <StackPanel>
-                <TextBlock Text="💡 Quick Tip"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,8" />
-                <TextBlock Text="Role-based access is active. Admins can manage users and settings; librarians manage daily operations."
-                           FontSize="12"
-                           Foreground="{StaticResource MutedText}"
-                           TextWrapping="Wrap" />
-              </StackPanel>
-            </Border>
-          </StackPanel>
-        </ScrollViewer>
+                          <Border Background="#F6F1E7"
+                                  CornerRadius="12"
+                                  Padding="16"
+                                  Margin="0,24,0,0">
+                            <StackPanel>
+                              <TextBlock Text="💡 Quick Tip"
+                                         FontSize="14"
+                                         FontWeight="SemiBold"
+                                         Margin="0,0,0,8" />
+                              <TextBlock Text="Role-based access is active. Admins can manage users and settings; librarians manage daily operations."
+                                         FontSize="12"
+                                         Foreground="{StaticResource MutedText}"
+                                         TextWrapping="Wrap" />
+                            </StackPanel>
+                          </Border>
+                        </StackPanel>
+                      </ScrollViewer>
+                    </Setter.Value>
+                  </Setter>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ContentControl.Style>
+        </ContentControl>
       </Border>
     </Grid>
   </Grid>

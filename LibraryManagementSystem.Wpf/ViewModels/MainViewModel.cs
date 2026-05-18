@@ -8,6 +8,7 @@ namespace LibraryManagementSystem.ViewModels;
 public class MainViewModel : ObservableObject
 {
     private readonly UserSession _session;
+    private object? _currentView;
 
     public MainViewModel(UserSession session)
     {
@@ -18,15 +19,22 @@ public class MainViewModel : ObservableObject
 
     public ObservableCollection<DashboardCardViewModel> Cards { get; } = new();
 
+    public object? CurrentView
+    {
+        get => _currentView;
+        set => SetProperty(ref _currentView, value);
+    }
+
     public string DisplayName => _session.CurrentUser?.Username ?? "User";
 
     public string RoleLabel => _session.CurrentUser?.Role == UserRole.Admin ? "Administrator" : "Librarian";
 
-    public string WelcomeMessage => $"Signed in as {DisplayName} ({RoleLabel})";
+    public string WelcomeMessage => $"Welcome, {DisplayName}!";
 
     public RelayCommand SignOutCommand { get; }
 
     public event Action? SignOutRequested;
+    public event Action<string>? NavigationRequested;
 
     private void BuildCards()
     {
@@ -40,7 +48,8 @@ public class MainViewModel : ObservableObject
             360,
             200,
             new SolidColorBrush(Color.FromRgb(234, 217, 199)),
-            true));
+            true,
+            new RelayCommand(() => NavigateTo("Books"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Patrons",
@@ -49,7 +58,8 @@ public class MainViewModel : ObservableObject
             300,
             200,
             new SolidColorBrush(Color.FromRgb(216, 195, 178)),
-            true));
+            true,
+            new RelayCommand(() => NavigateTo("Patrons"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Transactions",
@@ -58,7 +68,8 @@ public class MainViewModel : ObservableObject
             420,
             220,
             new SolidColorBrush(Color.FromRgb(226, 211, 195)),
-            true));
+            true,
+            new RelayCommand(() => NavigateTo("Transactions"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Reports",
@@ -67,7 +78,8 @@ public class MainViewModel : ObservableObject
             320,
             180,
             new SolidColorBrush(Color.FromRgb(207, 199, 182)),
-            true));
+            true,
+            new RelayCommand(() => NavigateTo("Reports"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Users & Roles",
@@ -76,7 +88,8 @@ public class MainViewModel : ObservableObject
             300,
             180,
             new SolidColorBrush(Color.FromRgb(212, 193, 176)),
-            isAdmin));
+            isAdmin,
+            new RelayCommand(() => NavigateTo("Users"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Settings",
@@ -85,7 +98,13 @@ public class MainViewModel : ObservableObject
             280,
             180,
             new SolidColorBrush(Color.FromRgb(230, 218, 206)),
-            isAdmin));
+            isAdmin,
+            new RelayCommand(() => NavigateTo("Settings"))));
+    }
+
+    private void NavigateTo(string viewName)
+    {
+        NavigationRequested?.Invoke(viewName);
     }
 
     private void SignOut()
