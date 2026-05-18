@@ -18,6 +18,12 @@ public class LoginViewModel : ObservableObject
         _authenticationService = authenticationService;
         _session = session;
         _signInCommand = new AsyncRelayCommand(SignInAsync, CanSignIn);
+        
+        // For development/testing - remove in production
+        #if DEBUG
+        _username = "admin";
+        _password = "Admin@123";
+        #endif
     }
 
     public event Action? LoginSucceeded;

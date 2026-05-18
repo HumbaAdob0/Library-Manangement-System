@@ -35,8 +35,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Books",
-            "Manage titles, copies, and availability.",
-            "BK",
+            "Manage titles and inventory",
+            "📚",
             360,
             200,
             new SolidColorBrush(Color.FromRgb(234, 217, 199)),
@@ -44,8 +44,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Patrons",
-            "View memberships and contact details.",
-            "PT",
+            "View memberships and details",
+            "👥",
             300,
             200,
             new SolidColorBrush(Color.FromRgb(216, 195, 178)),
@@ -53,8 +53,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Transactions",
-            "Track checkouts, returns, and fines.",
-            "TX",
+            "Checkouts, returns, and fines",
+            "🔄",
             420,
             220,
             new SolidColorBrush(Color.FromRgb(226, 211, 195)),
@@ -62,8 +62,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Reports",
-            "Generate insights and exports.",
-            "RP",
+            "Generate insights and exports",
+            "📊",
             320,
             180,
             new SolidColorBrush(Color.FromRgb(207, 199, 182)),
@@ -71,8 +71,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Users & Roles",
-            "Admin-only access controls.",
-            "UR",
+            "Admin access controls",
+            "🔐",
             300,
             180,
             new SolidColorBrush(Color.FromRgb(212, 193, 176)),
@@ -80,8 +80,8 @@ public class MainViewModel : ObservableObject
 
         Cards.Add(new DashboardCardViewModel(
             "Settings",
-            "System preferences and backups.",
-            "ST",
+            "System preferences",
+            "⚙️",
             280,
             180,
             new SolidColorBrush(Color.FromRgb(230, 218, 206)),
