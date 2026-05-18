@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Library Management System"
         Height="720"
-        Width="1120"
+        Width="1280"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BeigeBackground}">
   <Grid x:Name="Root" Opacity="0">
@@ -20,104 +20,199 @@
       </EventTrigger>
     </Grid.Triggers>
 
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="280" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-    <Border Grid.Row="0"
-            Margin="24,24,24,12"
+    <!-- Sidebar Navigation -->
+    <Border Grid.Column="0"
             Background="{StaticResource CardBackground}"
-            CornerRadius="18"
-            Padding="20">
+            BorderBrush="#E5D8C8"
+            BorderThickness="0,0,1,0">
       <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Padding="24,24,24,20"
+                BorderBrush="#E5D8C8"
+                BorderThickness="0,0,0,1">
+          <StackPanel>
+            <TextBlock Text="Library"
+                       FontSize="20"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="Management System"
+                       FontSize="14"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,2,0,0" />
+          </StackPanel>
+        </Border>
+
+        <!-- Navigation Items -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+          <ItemsControl ItemsSource="{Binding Cards}"
+                        Margin="12,12,12,0">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Button Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding Command}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Margin="0,0,0,8">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Width="40"
+                            Height="40"
+                            CornerRadius="10"
+                            Background="{Binding AccentBrush}">
+                      <TextBlock Text="{Binding IconText}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontSize="13"
+                                 FontWeight="SemiBold" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center">
+                      <TextBlock Text="{Binding Title}"
+                                 FontSize="14"
+                                 FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Subtitle}"
+                                 FontSize="11"
+                                 Foreground="{StaticResource MutedText}"
+                                 TextWrapping="Wrap"
+                                 Margin="0,2,0,0" />
+                    </StackPanel>
+                  </Grid>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+
+        <!-- User Info & Sign Out -->
+        <Border Grid.Row="2"
+                Padding="24,16"
+                BorderBrush="#E5D8C8"
+                BorderThickness="0,1,0,0">
+          <StackPanel>
+            <TextBlock Text="{Binding DisplayName}"
+                       FontSize="14"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="{Binding RoleLabel}"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,2,0,0" />
+            <Button Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Sign out"
+                    Command="{Binding SignOutCommand}"
+                    Height="36"
+                    Margin="0,12,0,0" />
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Main Content Area -->
+    <Grid Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- Welcome Header -->
+      <Border Grid.Row="0"
+              Margin="24,24,24,12"
+              Background="{StaticResource CardBackground}"
+              CornerRadius="18"
+              Padding="24">
         <StackPanel>
-          <TextBlock Text="Library Management System"
+          <TextBlock Text="{Binding WelcomeMessage}"
                      FontSize="22"
                      FontWeight="SemiBold" />
-          <TextBlock Text="{Binding WelcomeMessage}"
+          <TextBlock Text="Select an option from the sidebar to get started"
                      FontSize="14"
                      Foreground="{StaticResource MutedText}"
                      Margin="0,6,0,0" />
         </StackPanel>
+      </Border>
 
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
-          <TextBlock Text="{Binding DisplayName}"
-                     FontSize="14"
-                     HorizontalAlignment="Right" />
-          <TextBlock Text="{Binding RoleLabel}"
-                     FontSize="12"
-                     Foreground="{StaticResource MutedText}"
-                     HorizontalAlignment="Right"
-                     Margin="0,2,0,0" />
-          <Button Style="{StaticResource PrimaryButtonStyle}"
-                  Content="Sign out"
-                  Command="{Binding SignOutCommand}"
-                  Margin="0,10,0,0" />
-        </StackPanel>
-      </Grid>
-    </Border>
+      <!-- Content Area (Placeholder for future views) -->
+      <Border Grid.Row="1"
+              Margin="24,0,24,24"
+              Background="{StaticResource CardBackground}"
+              CornerRadius="18"
+              Padding="24">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <StackPanel>
+            <TextBlock Text="Dashboard"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,16" />
+            
+            <TextBlock Text="Welcome to the Library Management System!"
+                       FontSize="14"
+                       Foreground="{StaticResource MutedText}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,12" />
+            
+            <TextBlock Text="Use the navigation menu on the left to:"
+                       FontSize="14"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,0,0,8" />
+            
+            <StackPanel Margin="20,0,0,0">
+              <TextBlock Text="• Manage books and inventory"
+                         FontSize="13"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,4,0,0" />
+              <TextBlock Text="• View and edit patron information"
+                         FontSize="13"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,4,0,0" />
+              <TextBlock Text="• Process checkouts and returns"
+                         FontSize="13"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,4,0,0" />
+              <TextBlock Text="• Generate reports and analytics"
+                         FontSize="13"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,4,0,0" />
+              <TextBlock Text="• Manage users and system settings (Admin only)"
+                         FontSize="13"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,4,0,0" />
+            </StackPanel>
 
-    <ScrollViewer Grid.Row="1"
-                  Margin="24,0,24,24"
-                  VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
-      <ItemsControl ItemsSource="{Binding Cards}">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <WrapPanel />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Button Style="{StaticResource BentoCardButtonStyle}"
-                    Width="{Binding Width}"
-                    Height="{Binding Height}"
-                    IsEnabled="{Binding IsEnabled}"
-                    Command="{Binding Command}"
-                    Margin="10">
-              <Grid>
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Border Width="46"
-                        Height="46"
-                        CornerRadius="12"
-                        Background="{Binding AccentBrush}">
-                  <TextBlock Text="{Binding IconText}"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             FontSize="14"
-                             FontWeight="SemiBold" />
-                </Border>
-
-                <StackPanel Grid.Row="1" Margin="0,16,0,0">
-                  <TextBlock Text="{Binding Title}"
-                             FontSize="18"
-                             FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Subtitle}"
-                             Foreground="{StaticResource MutedText}"
-                             TextWrapping="Wrap"
-                             Margin="0,6,0,0" />
-                </StackPanel>
-              </Grid>
-            </Button>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-    </ScrollViewer>
-
-    <TextBlock Grid.Row="2"
-               Margin="28,0,28,20"
-               Foreground="{StaticResource MutedText}"
-               Text="Role-based access is active. Admins can manage users and settings; librarians manage daily operations." />
+            <Border Background="#F6F1E7"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,24,0,0">
+              <StackPanel>
+                <TextBlock Text="💡 Quick Tip"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8" />
+                <TextBlock Text="Role-based access is active. Admins can manage users and settings; librarians manage daily operations."
+                           FontSize="12"
+                           Foreground="{StaticResource MutedText}"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+    </Grid>
   </Grid>
 </Window>

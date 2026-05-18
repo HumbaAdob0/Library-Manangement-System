@@ -98,6 +98,26 @@
                    Foreground="{StaticResource MutedText}"
                    Margin="0,10,0,0"
                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+        <Border Background="#F6F1E7"
+                CornerRadius="8"
+                Padding="12"
+                Margin="0,24,0,0">
+          <StackPanel>
+            <TextBlock Text="Default Credentials"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource MutedText}" />
+            <TextBlock Text="Admin: admin / Admin@123"
+                       FontSize="10"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,4,0,0" />
+            <TextBlock Text="Librarian: librarian / Librarian@123"
+                       FontSize="10"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,2,0,0" />
+          </StackPanel>
+        </Border>
       </StackPanel>
     </Border>
   </Grid>
