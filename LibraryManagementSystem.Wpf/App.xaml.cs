@@ -45,6 +45,7 @@ public partial class App : Application
                 services.AddTransient<PatronsViewModel>();
                 services.AddTransient<TransactionsViewModel>();
                 services.AddTransient<UsersViewModel>();
+                services.AddTransient<ReportsViewModel>();
 
                 // Views
                 services.AddTransient<LoginWindow>();
@@ -53,6 +54,7 @@ public partial class App : Application
                 services.AddTransient<PatronsView>();
                 services.AddTransient<TransactionsView>();
                 services.AddTransient<UsersView>();
+                services.AddTransient<ReportsView>();
             })
             .Build();
     }
