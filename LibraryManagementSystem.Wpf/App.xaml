@@ -21,6 +21,9 @@
 
       <FontFamily x:Key="AppFont">Bahnschrift</FontFamily>
 
+      <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+      <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibility" xmlns:converters="clr-namespace:LibraryManagementSystem.Converters" />
+
       <Style TargetType="Window">
         <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
@@ -149,8 +152,6 @@
           </EventTrigger>
         </Style.Triggers>
       </Style>
-
-      <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
     </ResourceDictionary>
   </Application.Resources>
 </Application>

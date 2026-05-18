@@ -30,6 +30,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="Assets\logo.png" />
+    <Resource Include="Assets\library_picture.jpg" />
   </ItemGroup>
 
 </Project>

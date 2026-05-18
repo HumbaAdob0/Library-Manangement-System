@@ -29,35 +29,56 @@
 
     <Border Grid.Column="0"
             CornerRadius="24"
-            Padding="32">
-      <Border.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#F6F1E7" Offset="0" />
-          <GradientStop Color="#EAD9C7" Offset="1" />
-        </LinearGradientBrush>
-      </Border.Background>
-
+            Padding="0"
+            ClipToBounds="True">
       <Grid>
-        <StackPanel>
+        <!-- Background Image -->
+        <Image Source="/Assets/library_picture.jpg"
+               Stretch="UniformToFill"
+               Opacity="0.3" />
+        
+        <!-- Gradient Overlay -->
+        <Border>
+          <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+              <GradientStop Color="#F6F1E7" Offset="0" />
+              <GradientStop Color="#EAD9C7" Offset="1" />
+            </LinearGradientBrush>
+          </Border.Background>
+          <Border.Opacity>0.9</Border.Opacity>
+        </Border>
+
+        <!-- Content -->
+        <StackPanel Margin="32" VerticalAlignment="Center">
           <TextBlock Text="Welcome back"
-                     FontSize="28"
+                     FontSize="32"
                      FontWeight="SemiBold" />
           <TextBlock Text="Library Management System"
-                     FontSize="16"
+                     FontSize="18"
                      Foreground="{StaticResource MutedText}"
-                     Margin="0,10,0,0" />
+                     Margin="0,12,0,0" />
           <TextBlock Text="Secure access for admins and librarians"
-                     FontSize="13"
+                     FontSize="14"
                      Foreground="{StaticResource MutedText}"
-                     Margin="0,22,0,0" />
+                     Margin="0,8,0,0" />
+          
+          <Border Background="#FFFFFF"
+                  CornerRadius="12"
+                  Padding="16"
+                  Margin="0,32,0,0"
+                  Opacity="0.9">
+            <StackPanel>
+              <TextBlock Text="📚 Manage Books &amp; Inventory"
+                         FontSize="13"
+                         Margin="0,0,0,8" />
+              <TextBlock Text="👥 Track Patrons &amp; Memberships"
+                         FontSize="13"
+                         Margin="0,0,0,8" />
+              <TextBlock Text="🔄 Process Transactions &amp; Returns"
+                         FontSize="13" />
+            </StackPanel>
+          </Border>
         </StackPanel>
-
-        <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="300" Height="220">
-          <Rectangle Width="160" Height="100" RadiusX="20" RadiusY="20" Fill="#FFFFFF" Opacity="0.8" Canvas.Left="120" Canvas.Top="10" />
-          <Rectangle Width="120" Height="70" RadiusX="18" RadiusY="18" Fill="#EFE4D7" Opacity="0.9" Canvas.Left="30" Canvas.Top="30" />
-          <Rectangle Width="140" Height="90" RadiusX="20" RadiusY="20" Fill="#F7F0E7" Opacity="0.9" Canvas.Left="10" Canvas.Top="110" />
-          <Rectangle Width="130" Height="70" RadiusX="18" RadiusY="18" Fill="#E8D8C8" Opacity="0.9" Canvas.Left="160" Canvas.Top="130" />
-        </Canvas>
       </Grid>
     </Border>
 
@@ -80,10 +101,40 @@
                  Margin="0,6,0,16" />
 
         <TextBlock Text="Password" FontSize="12" Foreground="{StaticResource MutedText}" />
-        <PasswordBox Style="{StaticResource BentoPasswordBoxStyle}"
-                     helpers:PasswordBoxHelper.BindPassword="True"
-                     helpers:PasswordBoxHelper.BoundPassword="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                     Margin="0,6,0,20" />
+        <Grid Margin="0,6,0,20">
+          <PasswordBox x:Name="PasswordBox"
+                       Style="{StaticResource BentoPasswordBoxStyle}"
+                       helpers:PasswordBoxHelper.BindPassword="True"
+                       helpers:PasswordBoxHelper.BoundPassword="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                       Visibility="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolToVisibility}}" />
+          
+          <TextBox x:Name="PasswordTextBox"
+                   Style="{StaticResource BentoTextBoxStyle}"
+                   Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                   Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolToVisibility}}" />
+          
+          <Button Background="Transparent"
+                  BorderThickness="0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Margin="0,0,8,0"
+                  Padding="8"
+                  Cursor="Hand"
+                  Command="{Binding TogglePasswordVisibilityCommand}">
+            <TextBlock FontSize="16">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Text" Value="👁️" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsPasswordVisible}" Value="True">
+                      <Setter Property="Text" Value="🙈" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </Button>
+        </Grid>
 
         <Button Style="{StaticResource PrimaryButtonStyle}"
                 Content="Sign in"
