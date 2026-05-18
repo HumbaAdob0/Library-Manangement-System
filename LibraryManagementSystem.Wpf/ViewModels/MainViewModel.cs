@@ -15,6 +15,9 @@ public class MainViewModel : ObservableObject
         _session = session;
         SignOutCommand = new RelayCommand(SignOut);
         BuildCards();
+        
+        // Load Overview as the default landing page
+        LoadDefaultView();
     }
 
     public ObservableCollection<DashboardCardViewModel> Cards { get; } = new();
@@ -36,10 +39,26 @@ public class MainViewModel : ObservableObject
     public event Action? SignOutRequested;
     public event Action<string>? NavigationRequested;
 
+    private void LoadDefaultView()
+    {
+        // Trigger navigation to Overview on startup
+        NavigateTo("Overview");
+    }
+
     private void BuildCards()
     {
         var role = _session.CurrentUser?.Role ?? UserRole.Librarian;
         var isAdmin = role == UserRole.Admin;
+
+        Cards.Add(new DashboardCardViewModel(
+            "Overview",
+            "Dashboard and analytics",
+            "📊",
+            320,
+            180,
+            new SolidColorBrush(Color.FromRgb(207, 199, 182)),
+            true,
+            new RelayCommand(() => NavigateTo("Overview"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Books",
@@ -70,16 +89,6 @@ public class MainViewModel : ObservableObject
             new SolidColorBrush(Color.FromRgb(226, 211, 195)),
             true,
             new RelayCommand(() => NavigateTo("Transactions"))));
-
-        Cards.Add(new DashboardCardViewModel(
-            "Reports",
-            "Generate insights and exports",
-            "📊",
-            320,
-            180,
-            new SolidColorBrush(Color.FromRgb(207, 199, 182)),
-            true,
-            new RelayCommand(() => NavigateTo("Reports"))));
 
         Cards.Add(new DashboardCardViewModel(
             "Users & Roles",
