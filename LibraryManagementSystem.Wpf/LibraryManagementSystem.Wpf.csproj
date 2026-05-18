@@ -7,6 +7,11 @@
     <RootNamespace>LibraryManagementSystem</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    
+    <AssemblyName>LibraryManagementSystem</AssemblyName>
+    <Product>Library Management System</Product>
+    <Company>Library</Company>
+    <Description>Library Management System - Manage books, patrons, and transactions</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +29,7 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Assets\logo.png" />
   </ItemGroup>
 
 </Project>

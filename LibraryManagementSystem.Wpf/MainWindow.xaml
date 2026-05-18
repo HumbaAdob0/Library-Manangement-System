@@ -5,7 +5,8 @@
         Height="720"
         Width="1280"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BeigeBackground}">
+        Background="{StaticResource BeigeBackground}"
+        Icon="/Assets/logo.png">
   <Grid x:Name="Root" Opacity="0">
     <Grid.Triggers>
       <EventTrigger RoutedEvent="Loaded">
@@ -37,20 +38,39 @@
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- Header with Logo -->
         <Border Grid.Row="0"
                 Padding="24,24,24,20"
                 BorderBrush="#E5D8C8"
                 BorderThickness="0,0,0,1">
-          <StackPanel>
-            <TextBlock Text="Library"
-                       FontSize="20"
-                       FontWeight="SemiBold" />
-            <TextBlock Text="Management System"
-                       FontSize="14"
-                       Foreground="{StaticResource MutedText}"
-                       Margin="0,2,0,0" />
-          </StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Logo -->
+            <Border Grid.Column="0"
+                    Width="48"
+                    Height="48"
+                    CornerRadius="12"
+                    Background="#EAD9C7"
+                    Margin="0,0,12,0">
+              <Image Source="/Assets/logo.png"
+                     Stretch="UniformToFill"
+                     RenderOptions.BitmapScalingMode="HighQuality" />
+            </Border>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+              <TextBlock Text="Library"
+                         FontSize="20"
+                         FontWeight="SemiBold" />
+              <TextBlock Text="Management System"
+                         FontSize="14"
+                         Foreground="{StaticResource MutedText}"
+                         Margin="0,2,0,0" />
+            </StackPanel>
+          </Grid>
         </Border>
 
         <!-- Navigation Items -->
