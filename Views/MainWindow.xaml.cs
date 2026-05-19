@@ -69,13 +69,8 @@ namespace LibraryManagementSystem.Views
 
         private void ShowReports()
         {
-            ContentFrame.Content = new TextBlock 
-            { 
-                Text = "Reports - Coming Soon", 
-                FontSize = 24,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            // Load the ReportsView user control into the content frame
+            ContentFrame.Content = new ReportsView();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)

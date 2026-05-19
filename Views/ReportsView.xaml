@@ -1,0 +1,44 @@
+<UserControl x:Class="LibraryManagementSystem.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:LibraryManagementSystem.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.Resources>
+        <converters:DaysOverdueConverter x:Key="DaysOverdueConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="8">
+        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid">
+            <TabItem Header="Transaction History">
+                <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" Margin="8"
+                          materialDesign:DataGridAssist.CellPadding="8" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Patron Name" Binding="{Binding Patron.FullName}" Width="2*" />
+                        <DataGridTextColumn Header="Book Title" Binding="{Binding Book.Title}" Width="2*" />
+                        <DataGridTextColumn Header="Checkout Date" Binding="{Binding CheckoutDate, StringFormat=d}" Width="*" />
+                        <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat=d}" Width="*" />
+                        <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate, StringFormat=d}" Width="*" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Overdue Books">
+                <DataGrid ItemsSource="{Binding OverdueTransactions}" AutoGenerateColumns="False" IsReadOnly="True" Margin="8"
+                          materialDesign:DataGridAssist.CellPadding="8">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Patron Name" Binding="{Binding Patron.FullName}" Width="2*" />
+                        <DataGridTextColumn Header="Book Title" Binding="{Binding Book.Title}" Width="2*" />
+                        <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat=d}" Width="*" />
+                        <DataGridTextColumn Header="Days Overdue" Binding="{Binding DueDate, Converter={StaticResource DaysOverdueConverter}}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

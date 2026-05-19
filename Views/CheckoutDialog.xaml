@@ -1,0 +1,27 @@
+<Window x:Class="LibraryManagementSystem.Views.CheckoutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Checkout Book" Height="220" Width="420" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="Select Patron:" />
+            <ComboBox x:Name="PatronCombo" DisplayMemberPath="FullName" SelectedValuePath="Id" Width="360" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,8">
+            <TextBlock Text="Select Book:" />
+            <ComboBox x:Name="BookCombo" DisplayMemberPath="Title" SelectedValuePath="Id" Width="360" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+            <Button Content="Cancel" Width="80" Margin="0,0,8,0" Click="Cancel_Click" />
+            <Button Content="Checkout" Width="80" Click="Ok_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

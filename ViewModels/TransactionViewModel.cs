@@ -72,12 +72,32 @@ namespace LibraryManagementSystem.ViewModels
 
         private async Task CheckoutAsync()
         {
-            // For simplicity: take SelectedTransaction's BookId and PatronId if empty create dialog flow (not implemented)
-            if (SelectedTransaction == null)
-                return;
+            try
+            {
+                // Open a simple checkout dialog to choose patron and book
+                var dialog = new Views.CheckoutDialog(_bookService, _patronService);
+                var showResult = dialog.ShowDialog();
+                if (showResult != true)
+                    return; // cancelled
 
-            var result = await _transactionService.CheckoutBookAsync(SelectedTransaction.BookId, SelectedTransaction.PatronId);
-            await LoadAllAsync();
+                if (!dialog.SelectedBookId.HasValue || !dialog.SelectedPatronId.HasValue)
+                {
+                    System.Windows.MessageBox.Show("Please select both a book and a patron.", "Checkout", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
+                var bookId = dialog.SelectedBookId.Value;
+                var patronId = dialog.SelectedPatronId.Value;
+
+                var result = await _transactionService.CheckoutBookAsync(bookId, patronId);
+                await LoadAllAsync();
+
+                System.Windows.MessageBox.Show($"Checked out '{result.Book?.Title ?? "Book"}' to '{result.Patron?.FullName ?? "Patron"}'.", "Success", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Checkout Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private async Task ReturnAsync()
