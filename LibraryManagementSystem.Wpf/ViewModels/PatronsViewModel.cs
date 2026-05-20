@@ -312,12 +312,26 @@ public class PatronsViewModel : ObservableObject
             }
             else
             {
-                StatusMessage = "Cannot delete patron with active transactions or unpaid fines";
+                StatusMessage = "Failed to delete patron";
             }
+        }
+        catch (InvalidOperationException ex)
+        {
+            StatusMessage = $"Cannot delete: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                ex.Message,
+                "Cannot Delete Patron",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning);
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting patron: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                $"An unexpected error occurred: {ex.Message}",
+                "Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 }

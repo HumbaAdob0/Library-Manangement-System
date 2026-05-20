@@ -9,14 +9,6 @@ public partial class UsersView : UserControl
     {
         InitializeComponent();
         DataContext = viewModel;
-        Loaded += async (s, e) =>
-        {
-            await viewModel.InitializeAsync();
-            // Bind password box to ViewModel
-            DialogPasswordBox.PasswordChanged += (sender, args) =>
-            {
-                viewModel.DialogPassword = DialogPasswordBox.Password;
-            };
-        };
+        Loaded += async (s, e) => await viewModel.InitializeAsync();
     }
 }

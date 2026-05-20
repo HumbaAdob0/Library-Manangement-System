@@ -11,6 +11,7 @@ public class UsersViewModel : ObservableObject
 {
     private readonly LibraryDbContext _dbContext;
     private readonly PasswordHasher _passwordHasher;
+    private readonly UserSession _session;
     private ObservableCollection<User> _users;
     private User? _selectedUser;
     private string _searchText = string.Empty;
@@ -25,10 +26,11 @@ public class UsersViewModel : ObservableObject
     private UserRole _dialogRole = UserRole.Librarian;
     private bool _dialogIsActive = true;
 
-    public UsersViewModel(LibraryDbContext dbContext, PasswordHasher passwordHasher)
+    public UsersViewModel(LibraryDbContext dbContext, PasswordHasher passwordHasher, UserSession session)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
+        _session = session;
         _users = new ObservableCollection<User>();
 
         LoadUsersCommand = new AsyncRelayCommand(LoadUsersAsync);
@@ -252,6 +254,21 @@ public class UsersViewModel : ObservableObject
                 // Update existing user
                 if (SelectedUser == null) return;
 
+                // Prevent users from deactivating their own account
+                if (_session.CurrentUser != null && 
+                    SelectedUser.Id == _session.CurrentUser.Id && 
+                    !DialogIsActive)
+                {
+                    StatusMessage = "Cannot deactivate your own account";
+                    System.Windows.MessageBox.Show(
+                        "You cannot deactivate your own account while logged in.\n\n" +
+                        "To deactivate this account, please log in with a different administrator account.",
+                        "Cannot Deactivate Own Account",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
                 var user = await _dbContext.Users.FindAsync(SelectedUser.Id);
                 if (user == null)
                 {
@@ -273,6 +290,13 @@ public class UsersViewModel : ObservableObject
                 }
 
                 await _dbContext.SaveChangesAsync();
+                
+                // Update session if user edited their own account
+                if (_session.CurrentUser != null && user.Id == _session.CurrentUser.Id)
+                {
+                    _session.CurrentUser = user;
+                }
+
                 StatusMessage = $"Updated user: {user.Username}";
             }
             else
@@ -311,6 +335,11 @@ public class UsersViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error saving user: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                $"An error occurred while saving the user:\n\n{ex.Message}",
+                "Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 
@@ -320,6 +349,35 @@ public class UsersViewModel : ObservableObject
 
         try
         {
+            // Prevent users from deleting their own account
+            if (_session.CurrentUser != null && SelectedUser.Id == _session.CurrentUser.Id)
+            {
+                StatusMessage = "Cannot delete your own account";
+                System.Windows.MessageBox.Show(
+                    "You cannot delete your own account while logged in.\n\n" +
+                    "To delete this account, please:\n" +
+                    "1. Log in with a different administrator account\n" +
+                    "2. Then delete this account",
+                    "Cannot Delete Own Account",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            // Confirm deletion
+            var result = System.Windows.MessageBox.Show(
+                $"Are you sure you want to delete user '{SelectedUser.Username}'?\n\n" +
+                "This action cannot be undone.",
+                "Confirm Deletion",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Question);
+
+            if (result != System.Windows.MessageBoxResult.Yes)
+            {
+                StatusMessage = "Deletion cancelled";
+                return;
+            }
+
             var username = SelectedUser.Username;
             var user = await _dbContext.Users.FindAsync(SelectedUser.Id);
 
@@ -339,6 +397,11 @@ public class UsersViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting user: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                $"An error occurred while deleting the user:\n\n{ex.Message}",
+                "Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 }

@@ -59,6 +59,15 @@ public class BookService
 
     public async Task<Book> UpdateBookAsync(Book book)
     {
+        // Detach any existing tracked entity with the same ID
+        var existingEntry = _dbContext.ChangeTracker.Entries<Book>()
+            .FirstOrDefault(e => e.Entity.Id == book.Id);
+        
+        if (existingEntry != null)
+        {
+            existingEntry.State = EntityState.Detached;
+        }
+
         book.UpdatedAt = DateTime.UtcNow;
         
         _dbContext.Books.Update(book);
@@ -72,12 +81,16 @@ public class BookService
         if (book == null)
             return false;
 
-        // Check if book has active transactions
-        var hasActiveTransactions = await _dbContext.Transactions
-            .AnyAsync(t => t.BookId == id && !t.IsReturned);
+        // Check if book has ANY transactions (active or historical)
+        var hasTransactions = await _dbContext.Transactions
+            .AnyAsync(t => t.BookId == id);
 
-        if (hasActiveTransactions)
-            return false;
+        if (hasTransactions)
+        {
+            throw new InvalidOperationException(
+                "Cannot delete this book because it has transaction history. " +
+                "Books with checkout records cannot be deleted to maintain data integrity.");
+        }
 
         _dbContext.Books.Remove(book);
         await _dbContext.SaveChangesAsync();

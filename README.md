@@ -7,7 +7,7 @@ A comprehensive Library Management System built with **C# WPF** following the **
 ```bash
 # Clone the repository
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
-cd "Library Management System/LibraryManagementSystem.Wpf"
+cd '.\Library Management System\LibraryManagementSystem.Wpf\'
 
 # Restore packages
 dotnet restore

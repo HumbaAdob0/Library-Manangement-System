@@ -66,6 +66,15 @@ public class PatronService
 
     public async Task<Patron> UpdatePatronAsync(Patron patron)
     {
+        // Detach any existing tracked entity with the same ID
+        var existingEntry = _dbContext.ChangeTracker.Entries<Patron>()
+            .FirstOrDefault(e => e.Entity.Id == patron.Id);
+        
+        if (existingEntry != null)
+        {
+            existingEntry.State = EntityState.Detached;
+        }
+
         patron.UpdatedAt = DateTime.UtcNow;
         
         _dbContext.Patrons.Update(patron);
@@ -79,19 +88,27 @@ public class PatronService
         if (patron == null)
             return false;
 
-        // Check if patron has active transactions
-        var hasActiveTransactions = await _dbContext.Transactions
-            .AnyAsync(t => t.PatronId == id && !t.IsReturned);
+        // Check if patron has ANY transactions (active or historical)
+        var hasTransactions = await _dbContext.Transactions
+            .AnyAsync(t => t.PatronId == id);
 
-        if (hasActiveTransactions)
-            return false;
+        if (hasTransactions)
+        {
+            throw new InvalidOperationException(
+                "Cannot delete this patron because they have transaction history. " +
+                "Patrons with checkout records cannot be deleted to maintain data integrity.");
+        }
 
-        // Check if patron has unpaid fines
-        var hasUnpaidFines = await _dbContext.Fines
-            .AnyAsync(f => f.PatronId == id && !f.IsPaid);
+        // Check if patron has ANY fines (paid or unpaid)
+        var hasFines = await _dbContext.Fines
+            .AnyAsync(f => f.PatronId == id);
 
-        if (hasUnpaidFines)
-            return false;
+        if (hasFines)
+        {
+            throw new InvalidOperationException(
+                "Cannot delete this patron because they have fine records. " +
+                "Patrons with fines cannot be deleted to maintain financial records.");
+        }
 
         _dbContext.Patrons.Remove(patron);
         await _dbContext.SaveChangesAsync();

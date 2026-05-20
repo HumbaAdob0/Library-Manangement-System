@@ -398,12 +398,26 @@ public class BooksViewModel : ObservableObject
             }
             else
             {
-                StatusMessage = "Cannot delete book with active transactions";
+                StatusMessage = "Failed to delete book";
             }
+        }
+        catch (InvalidOperationException ex)
+        {
+            StatusMessage = $"Cannot delete: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                ex.Message,
+                "Cannot Delete Book",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning);
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting book: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                $"An unexpected error occurred: {ex.Message}",
+                "Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 }
