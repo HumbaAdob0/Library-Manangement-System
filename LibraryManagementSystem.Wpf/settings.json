@@ -1,0 +1,5 @@
+{
+  "LibraryName": "Library",
+  "DefaultLoanPeriodDays": 14,
+  "FinePerDay": 0.50
+}

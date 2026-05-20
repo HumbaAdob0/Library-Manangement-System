@@ -249,8 +249,12 @@ public class PatronsViewModel : ObservableObject
                 if (result != null)
                 {
                     // replace in collection
-                    var idx = Patrons.IndexOf(Patrons.FirstOrDefault(p => p.Id == result.Id));
-                    if (idx >= 0) Patrons[idx] = result;
+                    var existingPatron = Patrons.FirstOrDefault(p => p.Id == result.Id);
+                    if (existingPatron != null)
+                    {
+                        var idx = Patrons.IndexOf(existingPatron);
+                        if (idx >= 0) Patrons[idx] = result;
+                    }
                     SelectedPatron = result;
                     StatusMessage = $"Updated patron: {result.FullName}";
                     CloseDialog();

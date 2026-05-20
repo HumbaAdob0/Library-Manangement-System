@@ -88,24 +88,15 @@
                       Background="Transparent"
                       BorderThickness="0">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Book" Binding="{Binding Book.Title}" Width="2*" />
-                    <DataGridTextColumn Header="Patron" Binding="{Binding Patron.FullName}" Width="1.5*" />
+                    <DataGridTextColumn Header="Book" Binding="{Binding Book.Title, TargetNullValue='N/A'}" Width="2*" />
+                    <DataGridTextColumn Header="Patron" Binding="{Binding Patron.FullName, TargetNullValue='N/A'}" Width="1.5*" />
                     <DataGridTextColumn Header="Checkout Date" Binding="{Binding CheckoutDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
                     <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
-                    <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
+                    <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate, StringFormat='{}{0:MM/dd/yyyy}', TargetNullValue='-'}" Width="1*" />
                     <DataGridTextColumn Header="Fine" Binding="{Binding FineAmount, StringFormat='${0:F2}'}" Width="0.7*" />
                     <DataGridCheckBoxColumn Header="Returned" Binding="{Binding IsReturned}" Width="0.8*" />
                 </DataGrid.Columns>
             </DataGrid>
-        </Border>
-
-        <!-- Checkout Dialog Overlay -->
-        <Border Grid.Row="0" Grid.RowSpan="4"
-                Background="#80000000"
-                Visibility="{Binding IsCheckoutDialogOpen, Converter={StaticResource BoolToVisibility}}">
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24">
-                <views:CheckoutDialog />
-            </Border>
         </Border>
 
         <!-- Status Bar -->

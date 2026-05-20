@@ -320,11 +320,15 @@ public class BooksViewModel : ObservableObject
                 {
                     StatusMessage = $"Updated book: {result.Title}";
                     // Replace the item in the collection with the returned entity so UI updates immediately
-                    var existingIdx = Books.IndexOf(Books.FirstOrDefault(b => b.Id == result.Id));
-                    if (existingIdx >= 0)
+                    var existingBook = Books.FirstOrDefault(b => b.Id == result.Id);
+                    if (existingBook != null)
                     {
-                        Books[existingIdx] = result;
-                        SelectedBook = result;
+                        var existingIdx = Books.IndexOf(existingBook);
+                        if (existingIdx >= 0)
+                        {
+                            Books[existingIdx] = result;
+                            SelectedBook = result;
+                        }
                     }
 
                     CloseDialog();
