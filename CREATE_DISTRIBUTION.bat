@@ -6,9 +6,17 @@ echo.
 
 REM Build the application
 echo Step 1: Building application...
-cd /d "%~dp0LibraryManagementSystem.Wpf"
-dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
-cd ..
+cd /d "%~dp0"
+dotnet publish "LibraryManagementSystem.Wpf/LibraryManagementSystem.Wpf.csproj" --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
+
+if errorlevel 1 (
+    echo.
+    echo ========================================
+    echo BUILD FAILED!
+    echo ========================================
+    pause
+    exit /b 1
+)
 
 REM Create distribution folder
 echo.
@@ -39,7 +47,9 @@ dir "Distribution\LibraryManagementSystem.exe" | find "LibraryManagementSystem.e
 echo.
 echo Next steps:
 echo 1. Test the application by running Distribution\LibraryManagementSystem.exe
-echo 2. Zip the Distribution folder to share with users
-echo 3. Users should extract all files and run LibraryManagementSystem.exe
+echo 2. Type username: admin and password: Admin@123
+echo 3. Zip the Distribution folder to share with users
+echo.
+echo IMPORTANT: Users must TYPE their credentials (button enables after typing)
 echo.
 pause

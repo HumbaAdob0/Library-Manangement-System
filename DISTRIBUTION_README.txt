@@ -25,6 +25,11 @@ Librarian Account:
   Username: librarian
   Password: Librarian@123
 
+IMPORTANT: You must TYPE your credentials!
+- The sign-in button is disabled until you type both username and password
+- This is normal security behavior
+- The button will enable automatically as you type
+
 
 FEATURES
 --------
