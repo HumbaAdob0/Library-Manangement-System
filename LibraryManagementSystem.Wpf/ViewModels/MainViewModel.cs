@@ -94,7 +94,7 @@ public class MainViewModel : ObservableObject
         Cards.Add(new DashboardCardViewModel(
             "Settings",
             "System preferences",
-            "??",
+            "⚙️",
             280,
             180,
             new SolidColorBrush(Color.FromRgb(230, 218, 206)),
