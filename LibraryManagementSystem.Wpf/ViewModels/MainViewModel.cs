@@ -15,9 +15,6 @@ public class MainViewModel : ObservableObject
         _session = session;
         SignOutCommand = new RelayCommand(SignOut);
         BuildCards();
-        
-        // Load Overview as the default landing page
-        LoadDefaultView();
     }
 
     public ObservableCollection<DashboardCardViewModel> Cards { get; } = new();
@@ -38,12 +35,6 @@ public class MainViewModel : ObservableObject
 
     public event Action? SignOutRequested;
     public event Action<string>? NavigationRequested;
-
-    private void LoadDefaultView()
-    {
-        // Trigger navigation to Overview on startup
-        NavigateTo("Overview");
-    }
 
     private void BuildCards()
     {
@@ -103,7 +94,7 @@ public class MainViewModel : ObservableObject
         Cards.Add(new DashboardCardViewModel(
             "Settings",
             "System preferences",
-            "⚙️",
+            "??",
             280,
             180,
             new SolidColorBrush(Color.FromRgb(230, 218, 206)),
@@ -122,3 +113,5 @@ public class MainViewModel : ObservableObject
         SignOutRequested?.Invoke();
     }
 }
+
+

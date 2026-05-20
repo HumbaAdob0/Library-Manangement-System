@@ -20,6 +20,9 @@ public partial class MainWindow : Window
         // Initialize title from settings
         var settingsService = App.AppHost.Services.GetRequiredService<Services.SettingsService>();
         this.Title = settingsService.Get().LibraryName;
+        
+        // Load the default Overview view after event handlers are attached
+        OnNavigationRequested("Overview");
     }
 
     private void OnSignOutRequested()
@@ -49,3 +52,4 @@ public partial class MainWindow : Window
         }
     }
 }
+
