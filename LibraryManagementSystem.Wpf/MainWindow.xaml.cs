@@ -17,6 +17,9 @@ public partial class MainWindow : Window
         DataContext = _viewModel;
         _viewModel.SignOutRequested += OnSignOutRequested;
         _viewModel.NavigationRequested += OnNavigationRequested;
+        // Initialize title from settings
+        var settingsService = App.AppHost.Services.GetRequiredService<Services.SettingsService>();
+        this.Title = settingsService.Get().LibraryName;
     }
 
     private void OnSignOutRequested()
@@ -36,7 +39,7 @@ public partial class MainWindow : Window
             "Patrons" => App.AppHost.Services.GetRequiredService<PatronsView>(),
             "Transactions" => App.AppHost.Services.GetRequiredService<TransactionsView>(),
             "Users" => App.AppHost.Services.GetRequiredService<UsersView>(),
-            "Settings" => CreatePlaceholderView("⚙️ Settings", "Settings feature coming soon"),
+            "Settings" => App.AppHost.Services.GetRequiredService<SettingsView>(),
             _ => null
         };
 
@@ -44,19 +47,5 @@ public partial class MainWindow : Window
         {
             _viewModel.CurrentView = view;
         }
-    }
-
-    private UserControl CreatePlaceholderView(string title, string message)
-    {
-        var textBlock = new TextBlock
-        {
-            Text = $"{title}\n\n{message}",
-            FontSize = 18,
-            TextAlignment = TextAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center
-        };
-
-        return new UserControl { Content = textBlock };
     }
 }

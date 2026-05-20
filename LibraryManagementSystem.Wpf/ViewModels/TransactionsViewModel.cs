@@ -35,6 +35,31 @@ public class TransactionsViewModel : ObservableObject
         RefreshCommand = new AsyncRelayCommand(LoadTransactionsAsync);
     }
 
+    // Available patrons and books for checkout dialog
+    private ObservableCollection<Patron> _availablePatrons = new();
+    private ObservableCollection<Book> _availableBooks = new();
+
+    public ObservableCollection<Patron> AvailablePatrons { get => _availablePatrons; set => SetProperty(ref _availablePatrons, value); }
+    public ObservableCollection<Book> AvailableBooks { get => _availableBooks; set => SetProperty(ref _availableBooks, value); }
+
+    // Checkout dialog properties
+    private bool _isCheckoutDialogOpen;
+    private Patron? _selectedPatronForCheckout;
+    private Book? _selectedBookForCheckout;
+    private DateTime _checkoutDate = DateTime.Now;
+    private DateTime _dueDate = DateTime.Now.AddDays(14);
+
+    public bool IsCheckoutDialogOpen { get => _isCheckoutDialogOpen; set => SetProperty(ref _isCheckoutDialogOpen, value); }
+    public Patron? SelectedPatronForCheckout { get => _selectedPatronForCheckout; set => SetProperty(ref _selectedPatronForCheckout, value); }
+    public Book? SelectedBookForCheckout { get => _selectedBookForCheckout; set => SetProperty(ref _selectedBookForCheckout, value); }
+    public DateTime CheckoutDate { get => _checkoutDate; set => SetProperty(ref _checkoutDate, value); }
+    public DateTime DueDate { get => _dueDate; set => SetProperty(ref _dueDate, value); }
+
+    public ICommand SaveCheckoutCommand => new AsyncRelayCommand(SaveCheckoutAsync);
+    public ICommand CancelCheckoutCommand => new RelayCommand(CloseCheckoutDialog);
+
+
+
     public ObservableCollection<Transaction> Transactions
     {
         get => _transactions;
