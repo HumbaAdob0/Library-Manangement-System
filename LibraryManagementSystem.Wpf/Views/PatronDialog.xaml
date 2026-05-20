@@ -5,33 +5,296 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:LibraryManagementSystem.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="600">
-    <Border Background="{StaticResource CardBackground}" Padding="16" CornerRadius="12">
-        <StackPanel>
-            <TextBlock Text="{Binding DialogTitle}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12" />
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Border Background="{StaticResource CardBackground}" 
+            CornerRadius="16"
+            Padding="0">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.15" />
+        </Border.Effect>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <TextBlock Text="Full Name" />
-            <TextBox Text="{Binding DialogFullName, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+            <!-- Header -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource AccentSand}"
+                    CornerRadius="16,16,0,0"
+                    Padding="24,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Background="{StaticResource AccentClay}"
+                            Width="40" 
+                            Height="40" 
+                            CornerRadius="10"
+                            VerticalAlignment="Center"
+                            Margin="0,0,12,0">
+                        <TextBlock Text="👤" 
+                                  FontSize="22"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    
+                    <TextBlock Grid.Column="1"
+                              Text="{Binding DialogTitle}" 
+                              FontSize="20" 
+                              FontWeight="Bold"
+                              Foreground="{StaticResource PrimaryText}"
+                              VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
 
-            <TextBlock Text="Membership ID" />
-            <TextBox Text="{Binding DialogMembershipId, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+            <!-- Form Content -->
+            <ScrollViewer Grid.Row="1" 
+                         VerticalScrollBarVisibility="Auto"
+                         Padding="24,20">
+                <StackPanel>
+                    <!-- Personal Information Section -->
+                    <TextBlock Text="Personal Information" 
+                              FontSize="15" 
+                              FontWeight="SemiBold"
+                              Foreground="{StaticResource PrimaryText}"
+                              Margin="0,0,0,12"/>
 
-            <TextBlock Text="Email" />
-            <TextBox Text="{Binding DialogEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Phone" />
-            <TextBox Text="{Binding DialogPhone, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+                        <!-- Full Name -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Full Name *" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <TextBox Text="{Binding DialogFullName, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"/>
+                            </Border>
+                        </StackPanel>
 
-            <TextBlock Text="Membership Type" />
-            <ComboBox SelectedItem="{Binding DialogMembershipType, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12">
-                <ComboBoxItem Content="Standard" />
-                <ComboBoxItem Content="Premium" />
-            </ComboBox>
+                        <!-- Membership ID -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Membership ID *" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <TextBox Text="{Binding DialogMembershipId, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"
+                                        FontFamily="Consolas"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Cancel" Command="{Binding CancelDialogCommand}" Margin="0,0,8,0" />
-                <Button Content="Save" Command="{Binding SaveDialogCommand}" />
-            </StackPanel>
-        </StackPanel>
+                    <!-- Contact Information Section -->
+                    <TextBlock Text="Contact Information" 
+                              FontSize="15" 
+                              FontWeight="SemiBold"
+                              Foreground="{StaticResource PrimaryText}"
+                              Margin="0,20,0,12"/>
+
+                    <!-- Email -->
+                    <StackPanel Margin="0,0,0,16">
+                        <TextBlock Text="Email Address *" 
+                                  FontWeight="SemiBold" 
+                                  FontSize="13"
+                                  Foreground="{StaticResource MutedText}"
+                                  Margin="0,0,0,6"/>
+                        <Border Background="{StaticResource BeigeBackground}"
+                                BorderBrush="{StaticResource AccentSage}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="✉" 
+                                          FontSize="14"
+                                          Foreground="{StaticResource MutedText}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                        Text="{Binding DialogEmail, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Phone -->
+                    <StackPanel Margin="0,0,0,16">
+                        <TextBlock Text="Phone Number *" 
+                                  FontWeight="SemiBold" 
+                                  FontSize="13"
+                                  Foreground="{StaticResource MutedText}"
+                                  Margin="0,0,0,6"/>
+                        <Border Background="{StaticResource BeigeBackground}"
+                                BorderBrush="{StaticResource AccentSage}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="📞" 
+                                          FontSize="14"
+                                          Foreground="{StaticResource MutedText}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                        Text="{Binding DialogPhone, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"
+                                        FontFamily="Consolas"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Membership Details Section -->
+                    <TextBlock Text="Membership Details" 
+                              FontSize="15" 
+                              FontWeight="SemiBold"
+                              Foreground="{StaticResource PrimaryText}"
+                              Margin="0,4,0,12"/>
+
+                    <!-- Membership Type -->
+                    <StackPanel>
+                        <TextBlock Text="Membership Type *" 
+                                  FontWeight="SemiBold" 
+                                  FontSize="13"
+                                  Foreground="{StaticResource MutedText}"
+                                  Margin="0,0,0,6"/>
+                        <Border Background="{StaticResource BeigeBackground}"
+                                BorderBrush="{StaticResource AccentSage}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="2">
+                            <ComboBox SelectedItem="{Binding DialogMembershipType, UpdateSourceTrigger=PropertyChanged}"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     FontSize="14"
+                                     Padding="10,8">
+                                <ComboBoxItem Content="Standard" />
+                                <ComboBoxItem Content="Premium" />
+                                <ComboBoxItem Content="Student" />
+                            </ComboBox>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Required Fields Note -->
+                    <Border Background="#FEF3C7"
+                            BorderBrush="#FDE68A"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="12,10"
+                            Margin="0,20,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ℹ️" 
+                                      FontSize="14"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,8,0"/>
+                            <TextBlock Text="Fields marked with * are required" 
+                                      FontSize="12"
+                                      Foreground="#92400E"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer Actions -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource BeigeBackground}"
+                    BorderBrush="#E5D8C8"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,16,16"
+                    Padding="24,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                            Content="Cancel" 
+                            Command="{Binding CancelDialogCommand}"
+                            Background="Transparent"
+                            Foreground="{StaticResource MutedText}"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource AccentSage}"
+                            Height="40" 
+                            Padding="24,0"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Margin="0,0,12,0"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="10"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource AccentSage}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button Grid.Column="2"
+                            Command="{Binding SaveDialogCommand}" 
+                            Style="{StaticResource PrimaryButtonStyle}" 
+                            Height="40" 
+                            Padding="32,0"
+                            FontSize="14"
+                            FontWeight="SemiBold">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💾" 
+                                      FontSize="16"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,8,0"/>
+                            <TextBlock Text="Save Patron" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
     </Border>
 </UserControl>
