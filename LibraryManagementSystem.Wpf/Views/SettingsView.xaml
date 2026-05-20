@@ -3,26 +3,527 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer>
-        <StackPanel Margin="12">
-            <TextBlock Text="Settings" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,16,24,24">
+            <!-- Header Section -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Background="{StaticResource AccentClay}"
+                        Width="40" 
+                        Height="40" 
+                        CornerRadius="10"
+                        VerticalAlignment="Center"
+                        Margin="0,0,12,0">
+                    <TextBlock Text="⚙" 
+                              FontSize="24"
+                              Foreground="White"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="Settings" 
+                              FontSize="28" 
+                              FontWeight="Bold"
+                              Foreground="{StaticResource PrimaryText}"/>
+                    <TextBlock Text="Configure your library management system" 
+                              FontSize="13" 
+                              Foreground="{StaticResource MutedText}"
+                              Margin="0,2,0,0"/>
+                </StackPanel>
+            </Grid>
 
-            <Border Background="{StaticResource CardBackground}" Padding="16" CornerRadius="12">
+            <!-- Library Information Section -->
+            <Border Background="{StaticResource CardBackground}" 
+                    Padding="20" 
+                    CornerRadius="16"
+                    Margin="0,0,0,16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.08" />
+                </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="Library Name" FontWeight="SemiBold" />
-                    <TextBox Text="{Binding LibraryName, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Background="{StaticResource AccentSand}"
+                                Width="28" 
+                                Height="28" 
+                                CornerRadius="7"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                            <TextBlock Text="📚" 
+                                      FontSize="16"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" 
+                                  Text="Library Information" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
 
-                    <TextBlock Text="Default Loan Period (days)" FontWeight="SemiBold" />
-                    <TextBox Text="{Binding DefaultLoanPeriodDays, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Fine Per Day" FontWeight="SemiBold" />
-                    <TextBox Text="{Binding FinePerDay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,12" />
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Library Name" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <TextBox Text="{Binding LibraryName, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"/>
+                            </Border>
+                        </StackPanel>
 
-                    <Button Content="Save Settings" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButtonStyle}" Height="36" Width="140" HorizontalAlignment="Left"/>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Contact Email" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <TextBox Text="{Binding ContactEmail, UpdateSourceTrigger=PropertyChanged}" 
+                                        BorderThickness="0"
+                                        Background="Transparent"
+                                        FontSize="14"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Margin="0,16,0,0">
+                        <TextBlock Text="Library Address" 
+                                  FontWeight="SemiBold" 
+                                  FontSize="13"
+                                  Foreground="{StaticResource MutedText}"
+                                  Margin="0,0,0,6"/>
+                        <Border Background="{StaticResource BeigeBackground}"
+                                BorderBrush="{StaticResource AccentSage}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,10">
+                            <TextBox Text="{Binding LibraryAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    FontSize="14"/>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
             </Border>
+
+            <!-- Loan & Fine Policies Section -->
+            <Border Background="{StaticResource CardBackground}" 
+                    Padding="20" 
+                    CornerRadius="16"
+                    Margin="0,0,0,16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.08" />
+                </Border.Effect>
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Background="{StaticResource AccentSand}"
+                                Width="28" 
+                                Height="28" 
+                                CornerRadius="7"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                            <TextBlock Text="📖" 
+                                      FontSize="16"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" 
+                                  Text="Loan &amp; Fine Policies" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Default Loan Period" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding DefaultLoanPeriodDays, UpdateSourceTrigger=PropertyChanged}" 
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            FontSize="14"/>
+                                    <TextBlock Grid.Column="1" 
+                                              Text="days" 
+                                              FontSize="13"
+                                              Foreground="{StaticResource MutedText}"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Fine Per Day" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="$" 
+                                              FontSize="14"
+                                              Foreground="{StaticResource MutedText}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,4,0"/>
+                                    <TextBox Grid.Column="1"
+                                            Text="{Binding FinePerDay, UpdateSourceTrigger=PropertyChanged}" 
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            FontSize="14"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Maximum Renewals" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding MaxRenewals, UpdateSourceTrigger=PropertyChanged}" 
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            FontSize="14"/>
+                                    <TextBlock Grid.Column="1" 
+                                              Text="times" 
+                                              FontSize="13"
+                                              Foreground="{StaticResource MutedText}"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Max Books Per Patron" 
+                                      FontWeight="SemiBold" 
+                                      FontSize="13"
+                                      Foreground="{StaticResource MutedText}"
+                                      Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource BeigeBackground}"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding MaxBooksPerPatron, UpdateSourceTrigger=PropertyChanged}" 
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            FontSize="14"/>
+                                    <TextBlock Grid.Column="1" 
+                                              Text="books" 
+                                              FontSize="13"
+                                              Foreground="{StaticResource MutedText}"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- System Preferences Section -->
+            <Border Background="{StaticResource CardBackground}" 
+                    Padding="20" 
+                    CornerRadius="16"
+                    Margin="0,0,0,16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.08" />
+                </Border.Effect>
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Background="{StaticResource AccentSand}"
+                                Width="28" 
+                                Height="28" 
+                                CornerRadius="7"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                            <TextBlock Text="🔧" 
+                                      FontSize="16"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" 
+                                  Text="System Preferences" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- Toggle Options -->
+                    <Border Background="{StaticResource BeigeBackground}"
+                            BorderBrush="{StaticResource AccentSage}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Background="{StaticResource AccentClay}"
+                                    Width="24" 
+                                    Height="24" 
+                                    CornerRadius="6"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="✉" 
+                                          FontSize="14"
+                                          Foreground="White"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Email Notifications" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="14"/>
+                                <TextBlock Text="Send email reminders for due dates" 
+                                          FontSize="12"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="2" 
+                                     IsChecked="{Binding EnableEmailNotifications}"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{StaticResource BeigeBackground}"
+                            BorderBrush="{StaticResource AccentSage}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Background="{StaticResource AccentClay}"
+                                    Width="24" 
+                                    Height="24" 
+                                    CornerRadius="6"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="🔄" 
+                                          FontSize="14"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Auto-Renewal" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="14"/>
+                                <TextBlock Text="Automatically renew books if no holds exist" 
+                                          FontSize="12"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="2" 
+                                     IsChecked="{Binding EnableAutoRenewal}"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{StaticResource BeigeBackground}"
+                            BorderBrush="{StaticResource AccentSage}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Background="{StaticResource AccentClay}"
+                                    Width="24" 
+                                    Height="24" 
+                                    CornerRadius="6"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="🛡" 
+                                          FontSize="14"
+                                          Foreground="White"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Require Patron Verification" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="14"/>
+                                <TextBlock Text="Verify patron identity before checkout" 
+                                          FontSize="12"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="2" 
+                                     IsChecked="{Binding RequirePatronVerification}"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Action Buttons -->
+            <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Content="Reset to Defaults" 
+                        Command="{Binding ResetCommand}"
+                        Background="{StaticResource BeigeBackground}"
+                        Foreground="{StaticResource MutedText}"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource AccentSage}"
+                        Height="42" 
+                        Padding="20,0"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="12"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource AccentSage}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Grid.Column="2"
+                        Command="{Binding SaveCommand}" 
+                        Style="{StaticResource PrimaryButtonStyle}" 
+                        Height="42" 
+                        Padding="32,0"
+                        FontSize="14"
+                        FontWeight="SemiBold">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="💾" 
+                                  FontSize="16"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                        <TextBlock Text="Save Settings" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- Status Message -->
+            <TextBlock Text="{Binding StatusMessage}" 
+                      FontSize="13"
+                      Foreground="{StaticResource AccentClay}"
+                      HorizontalAlignment="Center"
+                      Margin="0,16,0,0"
+                      FontWeight="SemiBold"
+                      Visibility="{Binding HasStatusMessage, Converter={StaticResource BoolToVisibility}}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
