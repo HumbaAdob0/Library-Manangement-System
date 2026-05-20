@@ -207,10 +207,10 @@ public class ReportsViewModel : ObservableObject
             .CountAsync(t => t.ReturnDate == null && t.DueDate < DateTime.Today);
 
         // Fines Statistics
-        TotalFines = await _dbContext.Fines.SumAsync(f => (decimal?)f.Amount) ?? 0;
-        UnpaidFines = await _dbContext.Fines
+        TotalFines = (decimal)(await _dbContext.Fines.SumAsync(f => (double?)f.Amount) ?? 0);
+        UnpaidFines = (decimal)(await _dbContext.Fines
             .Where(f => !f.IsPaid)
-            .SumAsync(f => (decimal?)f.Amount) ?? 0;
+            .SumAsync(f => (double?)f.Amount) ?? 0);
     }
 
     private async Task LoadMostBorrowedBooksAsync()
