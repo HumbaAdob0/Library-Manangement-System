@@ -21,8 +21,8 @@ public class PatronsViewModel : ObservableObject
 
         LoadPatronsCommand = new AsyncRelayCommand(LoadPatronsAsync);
         SearchCommand = new AsyncRelayCommand(SearchPatronsAsync);
-        AddPatronCommand = new RelayCommand(AddPatron);
-        EditPatronCommand = new RelayCommand(EditPatron, () => SelectedPatron != null);
+        AddPatronCommand = new RelayCommand(OpenAddDialog);
+        EditPatronCommand = new RelayCommand(OpenEditDialog, () => SelectedPatron != null);
         DeletePatronCommand = new AsyncRelayCommand(DeletePatronAsync, () => SelectedPatron != null);
         RefreshCommand = new AsyncRelayCommand(LoadPatronsAsync);
     }
@@ -136,15 +136,159 @@ public class PatronsViewModel : ObservableObject
 
     private void AddPatron()
     {
-        StatusMessage = "Add patron feature - Coming soon";
-        // TODO: Open add patron dialog
+        OpenAddDialog();
     }
 
     private void EditPatron()
     {
         if (SelectedPatron == null) return;
-        StatusMessage = $"Edit patron feature - Coming soon (Selected: {SelectedPatron.FullName})";
-        // TODO: Open edit patron dialog
+        OpenEditDialog();
+    }
+
+    // Dialog properties
+    private bool _isDialogOpen;
+    private bool _isEditMode;
+    private string _dialogFullName = string.Empty;
+    private string _dialogMembershipId = string.Empty;
+    private string _dialogEmail = string.Empty;
+    private string _dialogPhone = string.Empty;
+    private MembershipType _dialogMembershipType = MembershipType.Standard;
+
+    public bool IsDialogOpen
+    {
+        get => _isDialogOpen;
+        set => SetProperty(ref _isDialogOpen, value);
+    }
+
+    public bool IsDialogEditMode
+    {
+        get => _isEditMode;
+        set
+        {
+            if (SetProperty(ref _isEditMode, value))
+            {
+                OnPropertyChanged(nameof(DialogTitle));
+            }
+        }
+    }
+
+    public string DialogTitle => IsDialogEditMode ? "Edit Patron" : "Add Patron";
+
+    public string DialogFullName { get => _dialogFullName; set => SetProperty(ref _dialogFullName, value); }
+    public string DialogMembershipId { get => _dialogMembershipId; set => SetProperty(ref _dialogMembershipId, value); }
+    public string DialogEmail { get => _dialogEmail; set => SetProperty(ref _dialogEmail, value); }
+    public string DialogPhone { get => _dialogPhone; set => SetProperty(ref _dialogPhone, value); }
+    public MembershipType DialogMembershipType { get => _dialogMembershipType; set => SetProperty(ref _dialogMembershipType, value); }
+
+    public ICommand SaveDialogCommand => new AsyncRelayCommand(SaveDialogAsync);
+    public ICommand CancelDialogCommand => new RelayCommand(CloseDialog);
+
+    private void OpenAddDialog()
+    {
+        IsDialogEditMode = false;
+        DialogFullName = string.Empty;
+        DialogMembershipId = string.Empty;
+        DialogEmail = string.Empty;
+        DialogPhone = string.Empty;
+        DialogMembershipType = MembershipType.Standard;
+        IsDialogOpen = true;
+    }
+
+    private void OpenEditDialog()
+    {
+        if (SelectedPatron == null) return;
+
+        IsDialogEditMode = true;
+        DialogFullName = SelectedPatron.FullName;
+        DialogMembershipId = SelectedPatron.MembershipId;
+        DialogEmail = SelectedPatron.Email;
+        DialogPhone = SelectedPatron.PhoneNumber;
+        DialogMembershipType = SelectedPatron.MembershipType;
+        IsDialogOpen = true;
+    }
+
+    private void CloseDialog()
+    {
+        IsDialogOpen = false;
+    }
+
+    private async Task SaveDialogAsync()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(DialogFullName))
+            {
+                StatusMessage = "Full name is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(DialogMembershipId))
+            {
+                StatusMessage = "Membership ID is required";
+                return;
+            }
+
+            if (IsDialogEditMode)
+            {
+                if (SelectedPatron == null) return;
+
+                var patron = new Patron
+                {
+                    Id = SelectedPatron.Id,
+                    FullName = DialogFullName.Trim(),
+                    MembershipId = DialogMembershipId.Trim(),
+                    Email = DialogEmail.Trim(),
+                    PhoneNumber = DialogPhone.Trim(),
+                    MembershipType = DialogMembershipType,
+                    CreatedAt = SelectedPatron.CreatedAt,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsActive = SelectedPatron.IsActive
+                };
+
+                var result = await _patronService.UpdatePatronAsync(patron);
+                if (result != null)
+                {
+                    // replace in collection
+                    var idx = Patrons.IndexOf(Patrons.FirstOrDefault(p => p.Id == result.Id));
+                    if (idx >= 0) Patrons[idx] = result;
+                    SelectedPatron = result;
+                    StatusMessage = $"Updated patron: {result.FullName}";
+                    CloseDialog();
+                }
+                else
+                {
+                    StatusMessage = "Failed to update patron";
+                }
+            }
+            else
+            {
+                var patron = new Patron
+                {
+                    FullName = DialogFullName.Trim(),
+                    MembershipId = DialogMembershipId.Trim(),
+                    Email = DialogEmail.Trim(),
+                    PhoneNumber = DialogPhone.Trim(),
+                    MembershipType = DialogMembershipType,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                var result = await _patronService.AddPatronAsync(patron);
+                if (result != null)
+                {
+                    Patrons.Add(result);
+                    StatusMessage = $"Added patron: {result.FullName}";
+                    CloseDialog();
+                }
+                else
+                {
+                    StatusMessage = "Failed to add patron";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error saving patron: {ex.Message}";
+        }
     }
 
     private async Task DeletePatronAsync()

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:LibraryManagementSystem.Views"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -96,7 +97,7 @@
                 BorderThickness="1"
                 CornerRadius="12">
             <DataGrid ItemsSource="{Binding Patrons}"
-                      SelectedItem="{Binding SelectedPatron}"
+                      SelectedItem="{Binding SelectedPatron, Mode=TwoWay}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       GridLinesVisibility="None"
@@ -115,6 +116,15 @@
                     <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="0.6*" />
                 </DataGrid.Columns>
             </DataGrid>
+        </Border>
+
+        <!-- Add/Edit Dialog Overlay -->
+        <Border Grid.Row="0" Grid.RowSpan="4"
+                Background="#80000000"
+                Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisibility}}">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24">
+                <views:PatronDialog />
+            </Border>
         </Border>
 
         <!-- Status Bar -->

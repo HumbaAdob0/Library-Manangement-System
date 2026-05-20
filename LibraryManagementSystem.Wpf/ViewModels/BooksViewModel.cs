@@ -318,9 +318,16 @@ public class BooksViewModel : ObservableObject
                 var result = await _bookService.UpdateBookAsync(book);
                 if (result != null)
                 {
-                    StatusMessage = $"Updated book: {book.Title}";
+                    StatusMessage = $"Updated book: {result.Title}";
+                    // Replace the item in the collection with the returned entity so UI updates immediately
+                    var existingIdx = Books.IndexOf(Books.FirstOrDefault(b => b.Id == result.Id));
+                    if (existingIdx >= 0)
+                    {
+                        Books[existingIdx] = result;
+                        SelectedBook = result;
+                    }
+
                     CloseDialog();
-                    await LoadBooksAsync();
                 }
                 else
                 {
@@ -348,8 +355,9 @@ public class BooksViewModel : ObservableObject
                 if (result != null)
                 {
                     StatusMessage = $"Added book: {book.Title}";
+                    // Add to collection so UI updates immediately
+                    Books.Add(result);
                     CloseDialog();
-                    await LoadBooksAsync();
                 }
                 else
                 {
@@ -374,7 +382,13 @@ public class BooksViewModel : ObservableObject
 
             if (success)
             {
-                Books.Remove(SelectedBook);
+                // Remove by id in case the instances differ
+                var toRemove = Books.FirstOrDefault(b => b.Id == SelectedBook.Id);
+                if (toRemove != null)
+                {
+                    Books.Remove(toRemove);
+                }
+
                 StatusMessage = $"Deleted: {bookTitle}";
                 SelectedBook = null;
             }

@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:LibraryManagementSystem.Models"
+             xmlns:helpers="clr-namespace:LibraryManagementSystem.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -174,7 +175,9 @@
                                    Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibility}}" />
                         <PasswordBox Style="{StaticResource BentoPasswordBoxStyle}"
                                      x:Name="DialogPasswordBox"
-                                     Margin="0,6,0,16" />
+                                     Margin="0,6,0,16"
+                                     helpers:PasswordBoxHelper.BindPassword="True"
+                                     helpers:PasswordBoxHelper.BoundPassword="{Binding DialogPassword, Mode=TwoWay}" />
 
                         <TextBlock Text="Role" FontSize="12" Foreground="{StaticResource MutedText}" />
                         <ComboBox SelectedItem="{Binding DialogRole}"

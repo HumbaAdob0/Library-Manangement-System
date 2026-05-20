@@ -29,6 +29,7 @@ public partial class App : Application
                 // Core Services
                 services.AddSingleton<PasswordHasher>();
                 services.AddSingleton<UserSession>();
+                services.AddSingleton<Services.SettingsService>();
                 services.AddScoped<AuthenticationService>();
                 services.AddScoped<DbSeeder>();
 
@@ -46,6 +47,7 @@ public partial class App : Application
                 services.AddTransient<TransactionsViewModel>();
                 services.AddTransient<UsersViewModel>();
                 services.AddTransient<ReportsViewModel>();
+                services.AddTransient<ViewModels.SettingsViewModel>();
 
                 // Views
                 services.AddTransient<LoginWindow>();
@@ -55,6 +57,7 @@ public partial class App : Application
                 services.AddTransient<TransactionsView>();
                 services.AddTransient<UsersView>();
                 services.AddTransient<ReportsView>();
+                services.AddTransient<Views.SettingsView>();
             })
             .Build();
     }
