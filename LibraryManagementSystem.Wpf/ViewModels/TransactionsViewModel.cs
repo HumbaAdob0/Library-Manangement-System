@@ -1,15 +1,17 @@
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Views;
 
 namespace LibraryManagementSystem.ViewModels;
 
 public class TransactionsViewModel : ObservableObject
 {
     private readonly TransactionService _transactionService;
-    private readonly PatronService _patronService;
     private readonly BookService _bookService;
+    private readonly PatronService _patronService;
     private ObservableCollection<Transaction> _transactions;
     private Transaction? _selectedTransaction;
     private bool _showActiveOnly = true;
@@ -17,15 +19,15 @@ public class TransactionsViewModel : ObservableObject
     private bool _isLoading;
     private string _statusMessage = string.Empty;
 
-    public TransactionsViewModel(TransactionService transactionService, PatronService patronService, BookService bookService)
+    public TransactionsViewModel(TransactionService transactionService, BookService bookService, PatronService patronService)
     {
         _transactionService = transactionService;
-        _patronService = patronService;
         _bookService = bookService;
+        _patronService = patronService;
         _transactions = new ObservableCollection<Transaction>();
 
         LoadTransactionsCommand = new AsyncRelayCommand(LoadTransactionsAsync);
-        CheckoutCommand = new RelayCommand(OpenCheckoutDialog);
+        CheckoutCommand = new AsyncRelayCommand(CheckoutAsync);
         ReturnCommand = new AsyncRelayCommand(ReturnBookAsync, () => SelectedTransaction != null && !SelectedTransaction.IsReturned);
         ShowAllCommand = new AsyncRelayCommand(ShowAllTransactionsAsync);
         ShowActiveCommand = new AsyncRelayCommand(ShowActiveTransactionsAsync);
@@ -213,59 +215,43 @@ public class TransactionsViewModel : ObservableObject
         }
     }
 
-    private async void OpenCheckoutDialog()
+    private async Task CheckoutAsync()
     {
         try
         {
-            // Load available patrons and books
-            var patrons = await _patronService.GetActivePatronsAsync();
-            AvailablePatrons.Clear();
-            foreach (var p in patrons) AvailablePatrons.Add(p);
-
-            var books = await _bookService.GetAvailableBooksAsync();
-            AvailableBooks.Clear();
-            foreach (var b in books) AvailableBooks.Add(b);
-
-            CheckoutDate = DateTime.Now;
-            DueDate = DateTime.Now.AddDays(14);
-            SelectedPatronForCheckout = AvailablePatrons.FirstOrDefault();
-            SelectedBookForCheckout = AvailableBooks.FirstOrDefault();
-            IsCheckoutDialogOpen = true;
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error opening checkout: {ex.Message}";
-        }
-    }
-
-    private void CloseCheckoutDialog()
-    {
-        IsCheckoutDialogOpen = false;
-    }
-
-    private async Task SaveCheckoutAsync()
-    {
-        try
-        {
-            if (SelectedPatronForCheckout == null || SelectedBookForCheckout == null)
+            var dialog = new CheckoutDialog(_bookService, _patronService)
             {
-                StatusMessage = "Select a patron and a book";
+                Owner = Application.Current?.MainWindow
+            };
+            var showResult = dialog.ShowDialog();
+            if (showResult != true)
+            {
+                StatusMessage = "Checkout cancelled";
                 return;
             }
 
-            var borrowDays = (DueDate.Date - CheckoutDate.Date).Days;
-            if (borrowDays < 1) borrowDays = 14;
+            if (!dialog.SelectedBookId.HasValue || !dialog.SelectedPatronId.HasValue)
+            {
+                MessageBox.Show("Please select both a book and a patron.", "Checkout", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            var transaction = await _transactionService.CheckoutBookAsync(SelectedBookForCheckout.Id, SelectedPatronForCheckout.Id, borrowDays);
+            var bookId = dialog.SelectedBookId.Value;
+            var patronId = dialog.SelectedPatronId.Value;
 
-            // Refresh lists
-            IsCheckoutDialogOpen = false;
+            await _transactionService.CheckoutBookAsync(bookId, patronId);
             await LoadTransactionsAsync();
-            StatusMessage = $"Checked out '{SelectedBookForCheckout.Title}' to {SelectedPatronForCheckout.FullName}";
+
+            var bookTitle = dialog.SelectedBookTitle ?? "Book";
+            var patronName = dialog.SelectedPatronName ?? "Patron";
+            StatusMessage = $"Checked out '{bookTitle}' to {patronName}";
+
+            MessageBox.Show($"Checked out '{bookTitle}' to '{patronName}'.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error during checkout: {ex.Message}";
+            StatusMessage = $"Checkout failed: {ex.Message}";
+            MessageBox.Show(ex.Message, "Checkout Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

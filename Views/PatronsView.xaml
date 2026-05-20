@@ -1,0 +1,62 @@
+<UserControl x:Class="LibraryManagementSystem.Views.PatronsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:LibraryManagementSystem.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <UserControl.DataContext>
+        <viewmodels:PatronManagementViewModel />
+    </UserControl.DataContext>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search and actions -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
+            <TextBox Width="320"
+                     Margin="0,0,8,0"
+                     materialDesign:HintAssist.Hint="Search by name, membership ID or email"
+                     Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Search" Command="{Binding SearchCommand}" Style="{DynamicResource MaterialDesignRaisedButton}" Margin="0,0,8,0"/>
+            <Button Content="Refresh" Command="{Binding RefreshCommand}" Style="{DynamicResource MaterialDesignOutlinedButton}" Margin="0,0,8,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add" Command="{Binding AddCommand}" Style="{DynamicResource MaterialDesignFloatingActionMiniAccentButton}" Margin="8,0,0,0"/>
+                <Button Content="Edit" Command="{Binding EditCommand}" Style="{DynamicResource MaterialDesignRaisedButton}" Margin="8,0,0,0"/>
+                <Button Content="Save" Command="{Binding SaveCommand}" Style="{DynamicResource MaterialDesignRaisedButton}" Margin="8,0,0,0"/>
+                <Button Content="Delete" Command="{Binding DeleteCommand}" Style="{DynamicResource MaterialDesignRaisedButton}" Margin="8,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Data Grid -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Patrons}" SelectedItem="{Binding SelectedPatron, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="False"
+                  CanUserAddRows="False"
+                  RowHeaderWidth="0"
+                  SelectionMode="Single"
+                  Margin="0,0,0,8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName, Mode=TwoWay}" Width="2*"/>
+                <DataGridTextColumn Header="Membership ID" Binding="{Binding MembershipId, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Phone" Binding="{Binding PhoneNumber, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Membership Type" Binding="{Binding MembershipType, Mode=TwoWay}" Width="*"/>
+                <DataGridTemplateColumn Header="Status" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" Content="Active" HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Footer / notes -->
+        <TextBlock Grid.Row="2" Text="Double-click a cell to edit. Select a row and click Save to persist changes." Foreground="Gray"/>
+    </Grid>
+</UserControl>
