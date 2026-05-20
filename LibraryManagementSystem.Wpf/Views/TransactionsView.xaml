@@ -75,7 +75,8 @@
                 Background="{StaticResource CardBackground}"
                 BorderBrush="#E5D8C8"
                 BorderThickness="1"
-                CornerRadius="12">
+                CornerRadius="12"
+                Padding="0">
             <DataGrid ItemsSource="{Binding Transactions}"
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                       AutoGenerateColumns="False"
@@ -85,16 +86,193 @@
                       SelectionMode="Single"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
                       Background="Transparent"
-                      BorderThickness="0">
+                      BorderThickness="0"
+                      RowHeight="48"
+                      ColumnHeaderHeight="44">
+                
+                <!-- DataGrid Resources for Styling -->
+                <DataGrid.Resources>
+                    <!-- Column Header Style -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F6F1E7" />
+                        <Setter Property="Foreground" Value="#6B5E55" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Padding" Value="16,12" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#E5D8C8" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+
+                    <!-- Row Style -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F9F6F2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#EAD9C7" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#E2CDB9" />
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Cell Style -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="16,0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Book" Binding="{Binding Book.Title, TargetNullValue='N/A'}" Width="2*" />
-                    <DataGridTextColumn Header="Patron" Binding="{Binding Patron.FullName, TargetNullValue='N/A'}" Width="1.5*" />
-                    <DataGridTextColumn Header="Checkout Date" Binding="{Binding CheckoutDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
-                    <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
-                    <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate, StringFormat='{}{0:MM/dd/yyyy}', TargetNullValue='-'}" Width="1*" />
-                    <DataGridTextColumn Header="Fine" Binding="{Binding FineAmount, StringFormat='${0:F2}'}" Width="0.7*" />
-                    <DataGridCheckBoxColumn Header="Returned" Binding="{Binding IsReturned}" Width="0.8*" />
+                    <!-- Book Column -->
+                    <DataGridTextColumn Header="Book" Binding="{Binding Book.Title, TargetNullValue='N/A'}" Width="2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Medium" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip" Value="{Binding Book.Title}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Patron Column -->
+                    <DataGridTextColumn Header="Patron" Binding="{Binding Patron.FullName, TargetNullValue='N/A'}" Width="1.5*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip" Value="{Binding Patron.FullName}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Checkout Date Column -->
+                    <DataGridTextColumn Header="Checkout Date" Binding="{Binding CheckoutDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1.1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Due Date Column -->
+                    <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1.1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="FontWeight" Value="Medium" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Return Date Column -->
+                    <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate, StringFormat='{}{0:MM/dd/yyyy}', TargetNullValue='-'}" Width="1.1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Fine Column -->
+                    <DataGridTemplateColumn Header="Fine" Width="0.8*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center"
+                                           FontWeight="Medium">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding FineAmount, StringFormat='${0:F2}'}" />
+                                            <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FineAmount}" Value="0">
+                                                    <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Returned Status Column -->
+                    <DataGridTemplateColumn Header="Status" Width="1*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <!-- Status Indicator Dot -->
+                                    <Ellipse Width="8" Height="8" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,8,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsReturned}" Value="False">
+                                                        <Setter Property="Fill" Value="#F59E0B" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    
+                                    <!-- Status Text -->
+                                    <TextBlock FontWeight="Medium"
+                                               FontSize="12"
+                                               VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="Returned" />
+                                                <Setter Property="Foreground" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsReturned}" Value="False">
+                                                        <Setter Property="Text" Value="Active" />
+                                                        <Setter Property="Foreground" Value="#F59E0B" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

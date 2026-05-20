@@ -95,7 +95,8 @@
                 Background="{StaticResource CardBackground}"
                 BorderBrush="#E5D8C8"
                 BorderThickness="1"
-                CornerRadius="12">
+                CornerRadius="12"
+                Padding="0">
             <DataGrid ItemsSource="{Binding Patrons}"
                       SelectedItem="{Binding SelectedPatron, Mode=TwoWay}"
                       AutoGenerateColumns="False"
@@ -105,15 +106,204 @@
                       SelectionMode="Single"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
                       Background="Transparent"
-                      BorderThickness="0">
+                      BorderThickness="0"
+                      RowHeight="48"
+                      ColumnHeaderHeight="44">
+                
+                <!-- DataGrid Resources for Styling -->
+                <DataGrid.Resources>
+                    <!-- Column Header Style -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F6F1E7" />
+                        <Setter Property="Foreground" Value="#6B5E55" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Padding" Value="16,12" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#E5D8C8" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+
+                    <!-- Row Style -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F9F6F2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#EAD9C7" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#E2CDB9" />
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Cell Style -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="16,0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="1.5*" />
-                    <DataGridTextColumn Header="Membership ID" Binding="{Binding MembershipId}" Width="1*" />
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="1.5*" />
-                    <DataGridTextColumn Header="Phone" Binding="{Binding PhoneNumber}" Width="1*" />
-                    <DataGridTextColumn Header="Type" Binding="{Binding MembershipType}" Width="0.8*" />
-                    <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="0.6*" />
+                    <!-- Name Column -->
+                    <DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="1.5*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Medium" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip" Value="{Binding FullName}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Membership ID Column -->
+                    <DataGridTextColumn Header="Membership ID" Binding="{Binding MembershipId}" Width="1.2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                <Setter Property="FontFamily" Value="Consolas" />
+                                <Setter Property="FontSize" Value="12" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Email Column -->
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="1.8*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip" Value="{Binding Email}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Phone Column -->
+                    <DataGridTextColumn Header="Phone" Binding="{Binding PhoneNumber}" Width="1.2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                <Setter Property="FontFamily" Value="Consolas" />
+                                <Setter Property="FontSize" Value="12" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Membership Type Column -->
+                    <DataGridTemplateColumn Header="Type" Width="1*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="8" 
+                                        Padding="8,4"
+                                        HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#E0F2FE" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MembershipType}" Value="Premium">
+                                                    <Setter Property="Background" Value="#FEF3C7" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MembershipType}" Value="Student">
+                                                    <Setter Property="Background" Value="#DBEAFE" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding MembershipType}" 
+                                               FontSize="12"
+                                               FontWeight="Medium">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#0369A1" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding MembershipType}" Value="Premium">
+                                                        <Setter Property="Foreground" Value="#A16207" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding MembershipType}" Value="Student">
+                                                        <Setter Property="Foreground" Value="#1E40AF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Active Status Column -->
+                    <DataGridTemplateColumn Header="Status" Width="0.9*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <!-- Status Indicator Dot -->
+                                    <Ellipse Width="8" Height="8" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,8,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                        <Setter Property="Fill" Value="#9CA3AF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    
+                                    <!-- Status Text -->
+                                    <TextBlock FontWeight="Medium"
+                                               FontSize="12"
+                                               VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="Active" />
+                                                <Setter Property="Foreground" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                        <Setter Property="Text" Value="Inactive" />
+                                                        <Setter Property="Foreground" Value="#9CA3AF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

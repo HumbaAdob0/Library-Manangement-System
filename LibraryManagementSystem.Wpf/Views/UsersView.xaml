@@ -96,7 +96,8 @@
                 Background="{StaticResource CardBackground}"
                 BorderBrush="#E5D8C8"
                 BorderThickness="1"
-                CornerRadius="12">
+                CornerRadius="12"
+                Padding="0">
             <DataGrid ItemsSource="{Binding Users}"
                       SelectedItem="{Binding SelectedUser}"
                       AutoGenerateColumns="False"
@@ -106,13 +107,204 @@
                       SelectionMode="Single"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
                       Background="Transparent"
-                      BorderThickness="0">
+                      BorderThickness="0"
+                      RowHeight="48"
+                      ColumnHeaderHeight="44">
+                
+                <!-- DataGrid Resources for Styling -->
+                <DataGrid.Resources>
+                    <!-- Column Header Style -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F6F1E7" />
+                        <Setter Property="Foreground" Value="#6B5E55" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Padding" Value="16,12" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#E5D8C8" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+
+                    <!-- Row Style -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F9F6F2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#EAD9C7" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#E2CDB9" />
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Cell Style -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="16,0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="2*" />
-                    <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="1*" />
-                    <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="0.8*" />
-                    <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1*" />
+                    <!-- Username Column -->
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Medium" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Role Column -->
+                    <DataGridTemplateColumn Header="Role" Width="1.2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="8" 
+                                        Padding="10,5"
+                                        HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#DBEAFE" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                    <Setter Property="Background" Value="#FEE2E2" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Role}" Value="Librarian">
+                                                    <Setter Property="Background" Value="#E0E7FF" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!-- Role Icon -->
+                                        <TextBlock FontSize="12" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,6,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="👤" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                            <Setter Property="Text" Value="👑" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Role}" Value="Librarian">
+                                                            <Setter Property="Text" Value="📚" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        
+                                        <!-- Role Text -->
+                                        <TextBlock Text="{Binding Role}" 
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#1E40AF" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                            <Setter Property="Foreground" Value="#DC2626" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Role}" Value="Librarian">
+                                                            <Setter Property="Foreground" Value="#4338CA" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Active Status Column -->
+                    <DataGridTemplateColumn Header="Status" Width="1*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <!-- Status Indicator Dot -->
+                                    <Ellipse Width="8" Height="8" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,8,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                        <Setter Property="Fill" Value="#9CA3AF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    
+                                    <!-- Status Text -->
+                                    <TextBlock FontWeight="Medium"
+                                               FontSize="12"
+                                               VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="Active" />
+                                                <Setter Property="Foreground" Value="#10B981" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                        <Setter Property="Text" Value="Inactive" />
+                                                        <Setter Property="Foreground" Value="#9CA3AF" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Created Date Column -->
+                    <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat='{}{0:MM/dd/yyyy}'}" Width="1.1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="FontSize" Value="12" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
