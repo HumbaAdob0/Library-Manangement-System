@@ -136,5 +136,115 @@
                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
             </Grid>
         </Border>
+
+        <!-- Add/Edit Dialog Overlay -->
+        <Border Grid.Row="0" Grid.RowSpan="4"
+                Background="#80000000"
+                Visibility="{Binding IsAddEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
+            <Border Background="{StaticResource CardBackground}"
+                    CornerRadius="16"
+                    Padding="32"
+                    MaxWidth="600"
+                    MaxHeight="700"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Dialog Header -->
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding DialogTitleText}"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,24" />
+
+                    <!-- Dialog Content -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                        <StackPanel>
+                            <TextBlock Text="Title *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogTitle, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <TextBlock Text="ISBN *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogISBN, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <TextBlock Text="Author *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogAuthor, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <TextBlock Text="Genre" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogGenre, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <TextBlock Text="Publisher" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogPublisher, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <TextBlock Text="Published Year" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogPublishedYear, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,6,0,16" />
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                    <TextBlock Text="Total Copies *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                                    <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                             Text="{Binding DialogTotalCopies, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="0,6,0,0" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Available Copies *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                                    <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                             Text="{Binding DialogAvailableCopies, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="0,6,0,0" />
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="Description" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogDescription, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     Height="80"
+                                     Margin="0,6,0,0" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Dialog Actions -->
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0,16,0,0">
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Content="Cancel"
+                                Command="{Binding CancelDialogCommand}"
+                                Width="100"
+                                Height="36"
+                                Margin="0,0,8,0" />
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Content="Save"
+                                Command="{Binding SaveBookCommand}"
+                                Width="100"
+                                Height="36" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
     </Grid>
 </UserControl>

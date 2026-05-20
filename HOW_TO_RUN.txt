@@ -1,0 +1,53 @@
+========================================
+HOW TO RUN THE LIBRARY MANAGEMENT SYSTEM
+========================================
+
+IMPORTANT: You MUST run from the correct location!
+
+METHOD 1: Double-click the batch file (EASIEST)
+------------------------------------------------
+1. Double-click "RUN_APP.bat" in this folder
+2. Wait for it to build and start
+3. The application will open with the beige theme
+
+METHOD 2: Using Command Line
+-----------------------------
+1. Open Command Prompt or PowerShell
+2. Navigate to this folder:
+   cd "C:\Users\jonrh\Documents\Project\C#\Library Management System"
+3. Run:
+   cd LibraryManagementSystem.Wpf
+   dotnet run
+
+METHOD 3: Using the Executable (After building)
+------------------------------------------------
+1. First build: dotnet build "LibraryManagementSystem.Wpf\LibraryManagementSystem.Wpf.csproj"
+2. Run: LibraryManagementSystem.Wpf\bin\Debug\net10.0-windows\LibraryManagementSystem.exe
+
+WHAT YOU SHOULD SEE:
+--------------------
+✅ Login window with beige background (#F6F1E7)
+✅ Library picture on the left side
+✅ Modern card-based design
+✅ Overview tab at the top of sidebar (after login)
+✅ All your data persists between runs
+
+TROUBLESHOOTING:
+----------------
+If you still see the old design:
+1. Delete the old bin folder: del /s /q bin
+2. Rebuild: dotnet build "LibraryManagementSystem.Wpf\LibraryManagementSystem.Wpf.csproj"
+3. Run using METHOD 1 or METHOD 2 above
+
+DO NOT:
+-------
+❌ Don't run any .exe files from the root "bin" folder (old version)
+❌ Don't run from Visual Studio if it's configured for the old project
+✅ Always use the methods above
+
+DATABASE LOCATION:
+------------------
+Your database is at:
+LibraryManagementSystem.Wpf\library.db
+
+All changes are saved here and will persist.
