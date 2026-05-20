@@ -333,79 +333,264 @@
                 Visibility="{Binding IsAddEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
             <Border Background="{StaticResource CardBackground}"
                     CornerRadius="16"
-                    Padding="32"
-                    MaxWidth="500"
-                    MaxHeight="500"
+                    MaxWidth="550"
+                    MaxHeight="600"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.15" />
+                </Border.Effect>
+                
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Dialog Header -->
-                    <TextBlock Grid.Row="0"
-                               Text="{Binding DialogTitle}"
-                               FontSize="20"
-                               FontWeight="SemiBold"
-                               Margin="0,0,0,24" />
+                    <!-- Header -->
+                    <Border Grid.Row="0" 
+                            Background="{StaticResource AccentSand}"
+                            CornerRadius="16,16,0,0"
+                            Padding="24,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Background="{StaticResource AccentClay}"
+                                    Width="40" 
+                                    Height="40" 
+                                    CornerRadius="10"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="👤" 
+                                          FontSize="22"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </Border>
+                            
+                            <TextBlock Grid.Column="1"
+                                      Text="{Binding DialogTitle}" 
+                                      FontSize="20" 
+                                      FontWeight="Bold"
+                                      Foreground="{StaticResource PrimaryText}"
+                                      VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
 
-                    <!-- Dialog Content -->
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Text="Username" FontSize="12" Foreground="{StaticResource MutedText}" />
-                        <TextBox Style="{StaticResource BentoTextBoxStyle}"
-                                 Text="{Binding DialogUsername, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0,6,0,16" />
+                    <!-- Form Content -->
+                    <ScrollViewer Grid.Row="1" 
+                                 VerticalScrollBarVisibility="Auto"
+                                 Padding="24,20">
+                        <StackPanel>
+                            <!-- Account Information Section -->
+                            <TextBlock Text="Account Information" 
+                                      FontSize="15" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource PrimaryText}"
+                                      Margin="0,0,0,12"/>
 
-                        <TextBlock Text="Password" FontSize="12" Foreground="{StaticResource MutedText}" />
-                        <TextBlock Text="(Leave empty to keep current password)"
-                                   FontSize="10"
-                                   Foreground="{StaticResource MutedText}"
-                                   Margin="0,2,0,4"
-                                   Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibility}}" />
-                        <PasswordBox Style="{StaticResource BentoPasswordBoxStyle}"
-                                     x:Name="DialogPasswordBox"
-                                     Margin="0,6,0,16"
-                                     helpers:PasswordBoxHelper.BindPassword="True"
-                                     helpers:PasswordBoxHelper.BoundPassword="{Binding DialogPassword, Mode=TwoWay}" />
+                            <!-- Username -->
+                            <StackPanel Margin="0,0,0,16">
+                                <TextBlock Text="Username *" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="13"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,0,0,6"/>
+                                <Border Background="{StaticResource BeigeBackground}"
+                                        BorderBrush="{StaticResource AccentSage}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="12,10">
+                                    <TextBox Text="{Binding DialogUsername, UpdateSourceTrigger=PropertyChanged}" 
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            FontSize="14"/>
+                                </Border>
+                            </StackPanel>
 
-                        <TextBlock Text="Role" FontSize="12" Foreground="{StaticResource MutedText}" />
-                        <ComboBox SelectedItem="{Binding DialogRole}"
-                                  Margin="0,6,0,16"
-                                  Height="36"
-                                  Padding="12,8">
-                            <ComboBox.ItemsSource>
-                                <x:Array Type="models:UserRole">
-                                    <models:UserRole>Admin</models:UserRole>
-                                    <models:UserRole>Librarian</models:UserRole>
-                                </x:Array>
-                            </ComboBox.ItemsSource>
-                        </ComboBox>
+                            <!-- Password -->
+                            <StackPanel Margin="0,0,0,16">
+                                <TextBlock Text="Password *" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="13"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,0,0,2"/>
+                                <TextBlock Text="(Leave empty to keep current password)"
+                                          FontSize="11"
+                                          Foreground="{StaticResource MutedText}"
+                                          Margin="0,0,0,6"
+                                          Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibility}}" />
+                                <Border Background="{StaticResource BeigeBackground}"
+                                        BorderBrush="{StaticResource AccentSage}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="12,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="🔒" 
+                                                  FontSize="14"
+                                                  Foreground="{StaticResource MutedText}"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,8,0"/>
+                                        <PasswordBox Grid.Column="1"
+                                                    x:Name="DialogPasswordBox"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    FontSize="14"
+                                                    helpers:PasswordBoxHelper.BindPassword="True"
+                                                    helpers:PasswordBoxHelper.BoundPassword="{Binding DialogPassword, Mode=TwoWay}" />
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
 
-                        <CheckBox Content="Active"
-                                  IsChecked="{Binding DialogIsActive}"
-                                  Margin="0,0,0,16" />
-                    </StackPanel>
+                            <!-- Role & Status Section -->
+                            <TextBlock Text="Role &amp; Status" 
+                                      FontSize="15" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{StaticResource PrimaryText}"
+                                      Margin="0,4,0,12"/>
 
-                    <!-- Dialog Actions -->
-                    <StackPanel Grid.Row="2"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="0,16,0,0">
-                        <Button Style="{StaticResource PrimaryButtonStyle}"
-                                Content="Cancel"
-                                Command="{Binding CancelDialogCommand}"
-                                Width="100"
-                                Height="36"
-                                Margin="0,0,8,0" />
-                        <Button Style="{StaticResource PrimaryButtonStyle}"
-                                Content="Save"
-                                Command="{Binding SaveUserCommand}"
-                                Width="100"
-                                Height="36" />
-                    </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Role -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="User Role *" 
+                                              FontWeight="SemiBold" 
+                                              FontSize="13"
+                                              Foreground="{StaticResource MutedText}"
+                                              Margin="0,0,0,6"/>
+                                    <Border Background="{StaticResource BeigeBackground}"
+                                            BorderBrush="{StaticResource AccentSage}"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="2">
+                                        <ComboBox SelectedItem="{Binding DialogRole}"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 FontSize="14"
+                                                 Padding="10,8"
+                                                 Height="40">
+                                            <ComboBox.ItemsSource>
+                                                <x:Array Type="models:UserRole">
+                                                    <models:UserRole>Admin</models:UserRole>
+                                                    <models:UserRole>Librarian</models:UserRole>
+                                                </x:Array>
+                                            </ComboBox.ItemsSource>
+                                        </ComboBox>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Active Status -->
+                                <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                    <Border Background="{StaticResource BeigeBackground}"
+                                            BorderBrush="{StaticResource AccentSage}"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="12,10"
+                                            Height="40">
+                                        <CheckBox Content="Active Account"
+                                                 IsChecked="{Binding DialogIsActive}"
+                                                 VerticalAlignment="Center"
+                                                 FontSize="13"
+                                                 FontWeight="Medium"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Required Fields Note -->
+                            <Border Background="#FEF3C7"
+                                    BorderBrush="#FDE68A"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="12,10"
+                                    Margin="0,20,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ℹ️" 
+                                              FontSize="14"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,8,0"/>
+                                    <TextBlock Text="Fields marked with * are required" 
+                                              FontSize="12"
+                                              Foreground="#92400E"
+                                              VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Footer Actions -->
+                    <Border Grid.Row="2"
+                            Background="{StaticResource BeigeBackground}"
+                            BorderBrush="#E5D8C8"
+                            BorderThickness="0,1,0,0"
+                            CornerRadius="0,0,16,16"
+                            Padding="24,16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="1"
+                                    Content="Cancel" 
+                                    Command="{Binding CancelDialogCommand}"
+                                    Background="Transparent"
+                                    Foreground="{StaticResource MutedText}"
+                                    BorderThickness="1"
+                                    BorderBrush="{StaticResource AccentSage}"
+                                    Height="40" 
+                                    Padding="24,0"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Margin="0,0,12,0"
+                                    Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="10"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource AccentSage}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button Grid.Column="2"
+                                    Command="{Binding SaveUserCommand}" 
+                                    Style="{StaticResource PrimaryButtonStyle}" 
+                                    Height="40" 
+                                    Padding="32,0"
+                                    FontSize="14"
+                                    FontWeight="SemiBold">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="💾" 
+                                              FontSize="16"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,8,0"/>
+                                    <TextBlock Text="Save User" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
             </Border>
         </Border>
