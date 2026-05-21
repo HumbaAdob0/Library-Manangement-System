@@ -1,4 +1,5 @@
 using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Helpers;
 using LibraryManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,10 +31,12 @@ public class BookService
     public async Task<List<Book>> SearchBooksAsync(string searchTerm)
     {
         var term = searchTerm.ToLower();
+        var isbnDigits = ISBNHelper.GetDigits(searchTerm);
         return await _dbContext.Books
             .Where(b => b.Title.ToLower().Contains(term) ||
                        b.Author.ToLower().Contains(term) ||
                        b.ISBN.Contains(term) ||
+                       (!string.IsNullOrEmpty(isbnDigits) && b.ISBN.Replace("-", "").Contains(isbnDigits)) ||
                        b.Genre.ToLower().Contains(term))
             .OrderBy(b => b.Title)
             .ToListAsync();
@@ -49,6 +52,7 @@ public class BookService
 
     public async Task<Book> AddBookAsync(Book book)
     {
+        book.ISBN = ISBNHelper.FormatISBN13(book.ISBN);
         book.CreatedAt = DateTime.UtcNow;
         book.AvailableCopies = book.TotalCopies;
         
@@ -59,6 +63,8 @@ public class BookService
 
     public async Task<Book> UpdateBookAsync(Book book)
     {
+        book.ISBN = ISBNHelper.FormatISBN13(book.ISBN);
+
         // Detach any existing tracked entity with the same ID
         var existingEntry = _dbContext.ChangeTracker.Entries<Book>()
             .FirstOrDefault(e => e.Entity.Id == book.Id);
@@ -99,6 +105,7 @@ public class BookService
 
     public async Task<bool> IsISBNUniqueAsync(string isbn, int? excludeBookId = null)
     {
+        isbn = ISBNHelper.FormatISBN13(isbn);
         var query = _dbContext.Books.Where(b => b.ISBN == isbn);
         
         if (excludeBookId.HasValue)

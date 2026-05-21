@@ -1,6 +1,5 @@
 using System.Windows.Controls;
 using LibraryManagementSystem.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace LibraryManagementSystem.Views;
 
@@ -10,5 +9,6 @@ public partial class SettingsView : UserControl
     {
         InitializeComponent();
         DataContext = vm;
+        Loaded += async (s, e) => await vm.InitializeAsync();
     }
 }

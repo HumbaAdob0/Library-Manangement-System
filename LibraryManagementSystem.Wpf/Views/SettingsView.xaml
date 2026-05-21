@@ -136,6 +136,166 @@
                 </StackPanel>
             </Border>
 
+            <!-- Genres Section -->
+            <Border Background="{StaticResource CardBackground}"
+                    Padding="20"
+                    CornerRadius="16"
+                    Margin="0,0,0,16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.08" />
+                </Border.Effect>
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Background="{StaticResource AccentSand}"
+                                Width="28"
+                                Height="28"
+                                CornerRadius="7"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                            <TextBlock Text="G"
+                                      FontSize="15"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1"
+                                  Text="Book Genres"
+                                  FontSize="18"
+                                  FontWeight="SemiBold"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0"
+                                Background="{StaticResource BeigeBackground}"
+                                BorderBrush="{StaticResource AccentSage}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,10">
+                            <TextBox Text="{Binding GenreName, UpdateSourceTrigger=PropertyChanged}"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    FontSize="14"/>
+                        </Border>
+
+                        <Button Grid.Column="1"
+                                Content="{Binding GenreSaveButtonText}"
+                                Command="{Binding SaveGenreCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Height="42"
+                                MinWidth="120"
+                                Margin="10,0,0,0"/>
+
+                        <Button Grid.Column="2"
+                                Content="Clear"
+                                Command="{Binding ClearGenreCommand}"
+                                Background="{StaticResource BeigeBackground}"
+                                Foreground="{StaticResource MutedText}"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource AccentSage}"
+                                Height="42"
+                                MinWidth="78"
+                                Margin="8,0,0,0"
+                                Padding="16,0"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="12"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource AccentSage}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+
+                    <Border Background="{StaticResource BeigeBackground}"
+                            BorderBrush="{StaticResource AccentSage}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="180"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0"
+                                  Background="#F6F1E7"
+                                  Margin="0"
+                                  Height="38">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Available Genres"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource MutedText}"
+                                           VerticalAlignment="Center"
+                                           Margin="14,0,0,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Delete Selected"
+                                        Command="{Binding DeleteGenreCommand}"
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Height="30"
+                                        Margin="0,4,6,4"
+                                        Padding="12,4"/>
+                            </Grid>
+
+                            <ListBox Grid.Row="1"
+                                     ItemsSource="{Binding Genres}"
+                                     SelectedItem="{Binding SelectedGenre, Mode=TwoWay}"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="12,8"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontSize="14"
+                                                   Foreground="{StaticResource PrimaryText}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="{Binding GenreStatusMessage}"
+                              FontSize="13"
+                              Foreground="{StaticResource AccentClay}"
+                              Margin="0,10,0,0"
+                              FontWeight="SemiBold"
+                              Visibility="{Binding HasGenreStatusMessage, Converter={StaticResource BoolToVisibility}}"/>
+                </StackPanel>
+            </Border>
+
             <!-- Loan & Fine Policies Section -->
             <Border Background="{StaticResource CardBackground}" 
                     Padding="20" 

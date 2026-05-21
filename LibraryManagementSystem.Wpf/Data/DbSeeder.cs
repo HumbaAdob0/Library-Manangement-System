@@ -1,5 +1,6 @@
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Helpers;
 
 namespace LibraryManagementSystem.Data;
 
@@ -17,7 +18,10 @@ public class DbSeeder
     public void SeedDefaults()
     {
         SeedUsers();
+        SeedGenres();
         SeedBooks();
+        SeedGenres();
+        NormalizeBookISBNs();
         SeedPatrons();
         SeedTransactions();
     }
@@ -34,6 +38,56 @@ public class DbSeeder
 
         _dbContext.Users.AddRange(admin, librarian);
         _dbContext.SaveChanges();
+    }
+
+    private void SeedGenres()
+    {
+        var genreNames = new List<string>
+        {
+            "Fiction",
+            "Non-Fiction",
+            "Science Fiction",
+            "Fantasy",
+            "Mystery",
+            "Thriller",
+            "Romance",
+            "Horror",
+            "Biography",
+            "History",
+            "Self-Help",
+            "Poetry",
+            "Drama",
+            "Adventure",
+            "Children",
+            "Young Adult",
+            "Dystopian",
+            "Classic",
+            "Educational",
+            "Reference"
+        };
+
+        genreNames.AddRange(_dbContext.Books
+            .Select(b => b.Genre)
+            .Where(g => !string.IsNullOrWhiteSpace(g))
+            .ToList());
+
+        var existingNames = _dbContext.Genres
+            .Select(g => g.Name)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var genresToAdd = genreNames
+            .Select(g => g.Trim())
+            .Where(g => !string.IsNullOrWhiteSpace(g))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Where(g => !existingNames.Contains(g))
+            .Select(g => new Genre { Name = g, CreatedAt = DateTime.UtcNow })
+            .ToList();
+
+        if (genresToAdd.Count > 0)
+        {
+            _dbContext.Genres.AddRange(genresToAdd);
+            _dbContext.SaveChanges();
+        }
     }
 
     private void SeedBooks()
@@ -153,6 +207,38 @@ public class DbSeeder
 
         _dbContext.Books.AddRange(books);
         _dbContext.SaveChanges();
+    }
+
+    private void NormalizeBookISBNs()
+    {
+        var books = _dbContext.Books.ToList();
+        var hasChanges = false;
+
+        foreach (var book in books)
+        {
+            var formattedISBN = ISBNHelper.FormatISBN13(book.ISBN);
+            if (!ISBNHelper.IsValidISBN13(formattedISBN) || book.ISBN == formattedISBN)
+            {
+                continue;
+            }
+
+            var duplicateExists = books.Any(other =>
+                other.Id != book.Id &&
+                string.Equals(ISBNHelper.FormatISBN13(other.ISBN), formattedISBN, StringComparison.Ordinal));
+            if (duplicateExists)
+            {
+                continue;
+            }
+
+            book.ISBN = formattedISBN;
+            book.UpdatedAt = DateTime.UtcNow;
+            hasChanges = true;
+        }
+
+        if (hasChanges)
+        {
+            _dbContext.SaveChanges();
+        }
     }
 
     private void SeedPatrons()

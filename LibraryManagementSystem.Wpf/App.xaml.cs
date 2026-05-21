@@ -38,6 +38,7 @@ public partial class App : Application
                 services.AddScoped<PatronService>();
                 services.AddScoped<TransactionService>();
                 services.AddScoped<FineService>();
+                services.AddScoped<GenreService>();
 
                 // ViewModels
                 services.AddTransient<LoginViewModel>();
@@ -70,6 +71,7 @@ public partial class App : Application
         using var scope = AppHost.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
         db.Database.EnsureCreated();
+        db.EnsureLatestSchema();
         scope.ServiceProvider.GetRequiredService<DbSeeder>().SeedDefaults();
 
         var loginWindow = AppHost.Services.GetRequiredService<LoginWindow>();

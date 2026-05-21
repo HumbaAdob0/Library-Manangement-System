@@ -345,20 +345,55 @@
                                      Text="{Binding DialogTitle, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,6,0,16" />
 
-                            <TextBlock Text="ISBN *" FontSize="12" Foreground="{StaticResource MutedText}" />
-                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
-                                     Text="{Binding DialogISBN, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,6,0,16" />
+                            <TextBlock Text="ISBN * (13 digits)" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <Grid Margin="0,6,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox x:Name="ISBNTextBox"
+                                         Grid.Column="0"
+                                         Style="{StaticResource BentoTextBoxStyle}"
+                                         Text="{Binding DialogISBN, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="ISBNTextBox_TextChanged"
+                                         MaxLength="17" />
+
+                                <Button Grid.Column="1"
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Content="Scan"
+                                        Command="{Binding ScanBarcodeCommand}"
+                                        Height="38"
+                                        Margin="8,0,0,0"
+                                        Padding="18,8" />
+                            </Grid>
+                            <TextBlock Text="{Binding ISBNValidationMessage}"
+                                       FontSize="10"
+                                       Margin="0,0,0,12">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#4CAF50" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsISBNValid}" Value="False">
+                                                <Setter Property="Foreground" Value="#F44336" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                             <TextBlock Text="Author *" FontSize="12" Foreground="{StaticResource MutedText}" />
                             <TextBox Style="{StaticResource BentoTextBoxStyle}"
                                      Text="{Binding DialogAuthor, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,6,0,16" />
 
-                            <TextBlock Text="Genre" FontSize="12" Foreground="{StaticResource MutedText}" />
-                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
-                                     Text="{Binding DialogGenre, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,6,0,16" />
+                            <TextBlock Text="Genre *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <ComboBox Style="{StaticResource BentoComboBoxStyle}"
+                                      ItemsSource="{Binding AvailableGenres}"
+                                      SelectedValuePath="Name"
+                                      DisplayMemberPath="Name"
+                                      SelectedValue="{Binding DialogGenre, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="0,6,0,16" />
 
                             <TextBlock Text="Publisher" FontSize="12" Foreground="{StaticResource MutedText}" />
                             <TextBox Style="{StaticResource BentoTextBoxStyle}"

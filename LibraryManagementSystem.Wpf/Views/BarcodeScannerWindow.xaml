@@ -1,0 +1,72 @@
+<Window x:Class="LibraryManagementSystem.Views.BarcodeScannerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Scan ISBN Barcode"
+        Height="520"
+        Width="720"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BeigeBackground}"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Scan ISBN Barcode"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource PrimaryText}" />
+            <TextBlock Text="Point the camera at the book barcode. The ISBN fills in automatically when detected."
+                       FontSize="13"
+                       Foreground="{StaticResource MutedText}"
+                       Margin="0,4,0,0" />
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Background="#1F1F1F"
+                BorderBrush="#E5D8C8"
+                BorderThickness="1"
+                CornerRadius="12"
+                ClipToBounds="True">
+            <Grid>
+                <Image x:Name="PreviewImage"
+                       Stretch="Uniform"
+                       SnapsToDevicePixels="True" />
+                <Border Width="420"
+                        Height="170"
+                        BorderBrush="#EAD9C7"
+                        BorderThickness="2"
+                        CornerRadius="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Opacity="0.85" />
+            </Grid>
+        </Border>
+
+        <TextBlock x:Name="StatusTextBlock"
+                   Grid.Row="2"
+                   Text="Starting camera..."
+                   FontSize="13"
+                   Foreground="{StaticResource MutedText}"
+                   TextWrapping="Wrap"
+                   Margin="0,14,0,0" />
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button Content="Cancel"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    IsCancel="True"
+                    Width="110"
+                    Height="38"
+                    Click="CancelButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

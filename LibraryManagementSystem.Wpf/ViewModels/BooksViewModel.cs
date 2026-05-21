@@ -1,14 +1,19 @@
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using LibraryManagementSystem.Helpers;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Views;
 
 namespace LibraryManagementSystem.ViewModels;
 
 public class BooksViewModel : ObservableObject
 {
     private readonly BookService _bookService;
+    private readonly GenreService _genreService;
     private ObservableCollection<Book> _books;
+    private ObservableCollection<Genre> _availableGenres;
     private Book? _selectedBook;
     private string _searchText = string.Empty;
     private bool _isLoading;
@@ -26,11 +31,15 @@ public class BooksViewModel : ObservableObject
     private int _dialogTotalCopies = 1;
     private int _dialogAvailableCopies = 1;
     private string _dialogDescription = string.Empty;
+    private bool _isISBNValid = true;
+    private string _isbnValidationMessage = string.Empty;
 
-    public BooksViewModel(BookService bookService)
+    public BooksViewModel(BookService bookService, GenreService genreService)
     {
         _bookService = bookService;
+        _genreService = genreService;
         _books = new ObservableCollection<Book>();
+        _availableGenres = new ObservableCollection<Genre>();
 
         LoadBooksCommand = new AsyncRelayCommand(LoadBooksAsync);
         SearchCommand = new AsyncRelayCommand(SearchBooksAsync);
@@ -39,6 +48,7 @@ public class BooksViewModel : ObservableObject
         DeleteBookCommand = new AsyncRelayCommand(DeleteBookAsync, () => SelectedBook != null);
         SaveBookCommand = new AsyncRelayCommand(SaveBookAsync);
         CancelDialogCommand = new RelayCommand(CloseDialog);
+        ScanBarcodeCommand = new RelayCommand(ScanBarcode);
         RefreshCommand = new AsyncRelayCommand(LoadBooksAsync);
     }
 
@@ -46,6 +56,12 @@ public class BooksViewModel : ObservableObject
     {
         get => _books;
         set => SetProperty(ref _books, value);
+    }
+
+    public ObservableCollection<Genre> AvailableGenres
+    {
+        get => _availableGenres;
+        set => SetProperty(ref _availableGenres, value);
     }
 
     public Book? SelectedBook
@@ -103,7 +119,26 @@ public class BooksViewModel : ObservableObject
     public string DialogISBN
     {
         get => _dialogISBN;
-        set => SetProperty(ref _dialogISBN, value);
+        set
+        {
+            var formatted = ISBNHelper.FormatISBN13(value ?? string.Empty);
+            if (SetProperty(ref _dialogISBN, formatted))
+            {
+                ValidateISBN();
+            }
+        }
+    }
+
+    public bool IsISBNValid
+    {
+        get => _isISBNValid;
+        set => SetProperty(ref _isISBNValid, value);
+    }
+
+    public string ISBNValidationMessage
+    {
+        get => _isbnValidationMessage;
+        set => SetProperty(ref _isbnValidationMessage, value);
     }
 
     public string DialogAuthor
@@ -155,11 +190,51 @@ public class BooksViewModel : ObservableObject
     public ICommand DeleteBookCommand { get; }
     public ICommand SaveBookCommand { get; }
     public ICommand CancelDialogCommand { get; }
+    public ICommand ScanBarcodeCommand { get; }
     public ICommand RefreshCommand { get; }
 
     public async Task InitializeAsync()
     {
+        await LoadGenresAsync();
         await LoadBooksAsync();
+    }
+
+    private async Task LoadGenresAsync()
+    {
+        try
+        {
+            var genres = await _genreService.GetAllGenresAsync();
+            AvailableGenres.Clear();
+            foreach (var genre in genres)
+            {
+                AvailableGenres.Add(genre);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error loading genres: {ex.Message}";
+        }
+    }
+
+    private void ValidateISBN()
+    {
+        if (string.IsNullOrWhiteSpace(DialogISBN))
+        {
+            IsISBNValid = true;
+            ISBNValidationMessage = string.Empty;
+            return;
+        }
+
+        if (ISBNHelper.IsValidISBN13(DialogISBN))
+        {
+            IsISBNValid = true;
+            ISBNValidationMessage = "Valid ISBN-13";
+        }
+        else
+        {
+            IsISBNValid = false;
+            ISBNValidationMessage = "Invalid ISBN-13 format";
+        }
     }
 
     private async Task LoadBooksAsync()
@@ -276,9 +351,44 @@ public class BooksViewModel : ObservableObject
                 return;
             }
 
+            if (!ISBNHelper.IsValidISBN13(DialogISBN))
+            {
+                StatusMessage = "Invalid ISBN-13 format. Must be 13 digits starting with 978 or 979";
+                System.Windows.MessageBox.Show(
+                    "Please enter a valid ISBN-13 format.\n\n" +
+                    "Format: 978-0-123-45678-9 (13 digits)\n" +
+                    "Must start with 978 or 979",
+                    "Invalid ISBN",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            var normalizedISBN = ISBNHelper.FormatISBN13(DialogISBN);
+            var isbnIsUnique = await _bookService.IsISBNUniqueAsync(
+                normalizedISBN,
+                IsEditMode ? SelectedBook?.Id : null);
+
+            if (!isbnIsUnique)
+            {
+                StatusMessage = "A book with this ISBN already exists";
+                System.Windows.MessageBox.Show(
+                    "A book with this ISBN already exists. Please use a unique ISBN-13.",
+                    "Duplicate ISBN",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(DialogAuthor))
             {
                 StatusMessage = "Author is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(DialogGenre))
+            {
+                StatusMessage = "Genre is required";
                 return;
             }
 
@@ -303,7 +413,7 @@ public class BooksViewModel : ObservableObject
                 {
                     Id = SelectedBook.Id,
                     Title = DialogTitle.Trim(),
-                    ISBN = DialogISBN.Trim(),
+                    ISBN = normalizedISBN,
                     Author = DialogAuthor.Trim(),
                     Genre = DialogGenre.Trim(),
                     Publisher = DialogPublisher.Trim(),
@@ -344,7 +454,7 @@ public class BooksViewModel : ObservableObject
                 var book = new Book
                 {
                     Title = DialogTitle.Trim(),
-                    ISBN = DialogISBN.Trim(),
+                    ISBN = normalizedISBN,
                     Author = DialogAuthor.Trim(),
                     Genre = DialogGenre.Trim(),
                     Publisher = DialogPublisher.Trim(),
@@ -418,6 +528,37 @@ public class BooksViewModel : ObservableObject
                 "Error",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);
+        }
+    }
+
+    private void ScanBarcode()
+    {
+        try
+        {
+            var owner = Application.Current.Windows
+                .OfType<Window>()
+                .FirstOrDefault(window => window.IsActive)
+                ?? Application.Current.MainWindow;
+
+            var scannerWindow = new BarcodeScannerWindow
+            {
+                Owner = owner
+            };
+
+            if (scannerWindow.ShowDialog() == true && !string.IsNullOrWhiteSpace(scannerWindow.ScannedISBN))
+            {
+                DialogISBN = scannerWindow.ScannedISBN;
+                StatusMessage = "ISBN scanned successfully";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Barcode scanner error: {ex.Message}";
+            System.Windows.MessageBox.Show(
+                $"The barcode scanner could not start.\n\n{ex.Message}",
+                "Barcode Scanner",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning);
         }
     }
 }

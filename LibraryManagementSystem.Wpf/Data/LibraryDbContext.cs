@@ -15,6 +15,7 @@ public class LibraryDbContext : DbContext
     public DbSet<Patron> Patrons => Set<Patron>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Fine> Fines => Set<Fine>();
+    public DbSet<Genre> Genres => Set<Genre>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -101,6 +102,15 @@ public class LibraryDbContext : DbContext
             // Indexes for performance
             entity.HasIndex(f => f.PatronId);
             entity.HasIndex(f => f.IsPaid);
+        });
+
+        // Genre entity configuration
+        modelBuilder.Entity<Genre>(entity =>
+        {
+            entity.HasKey(g => g.Id);
+            entity.Property(g => g.Name).IsRequired().HasMaxLength(50);
+            entity.HasIndex(g => g.Name).IsUnique();
+            entity.Property(g => g.CreatedAt).HasDefaultValueSql("datetime('now')");
         });
     }
 }
