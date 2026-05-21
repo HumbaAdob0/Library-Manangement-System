@@ -2,14 +2,24 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Scan ISBN Barcode"
-        Height="520"
-        Width="720"
+        Height="560"
+        Width="760"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource BeigeBackground}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        Background="Transparent"
         Loaded="Window_Loaded"
         Closing="Window_Closing">
-    <Grid Margin="20">
+    <Grid Margin="18">
+        <Border Background="{StaticResource CardBackground}"
+                CornerRadius="16"
+                Padding="22">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.18" />
+            </Border.Effect>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -30,7 +40,7 @@
 
         <Border Grid.Row="1"
                 Background="#1F1F1F"
-                BorderBrush="#E5D8C8"
+                BorderBrush="{StaticResource SoftBorder}"
                 BorderThickness="1"
                 CornerRadius="12"
                 ClipToBounds="True">
@@ -40,7 +50,7 @@
                        SnapsToDevicePixels="True" />
                 <Border Width="420"
                         Height="170"
-                        BorderBrush="#EAD9C7"
+                        BorderBrush="{StaticResource AccentSand}"
                         BorderThickness="2"
                         CornerRadius="10"
                         HorizontalAlignment="Center"
@@ -62,11 +72,13 @@
                     HorizontalAlignment="Right"
                     Margin="0,18,0,0">
             <Button Content="Cancel"
-                    Style="{StaticResource PrimaryButtonStyle}"
+                    Style="{StaticResource SecondaryButtonStyle}"
                     IsCancel="True"
                     Width="110"
                     Height="38"
                     Click="CancelButton_Click" />
         </StackPanel>
+    </Grid>
+        </Border>
     </Grid>
 </Window>

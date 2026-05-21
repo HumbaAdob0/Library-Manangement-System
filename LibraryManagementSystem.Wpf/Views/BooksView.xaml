@@ -69,21 +69,21 @@
 
             <Button Grid.Column="1"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="➕ Add Book"
+                    Content="Add Book"
                     Command="{Binding AddBookCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
             <Button Grid.Column="2"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="✏️ Edit"
+                    Content="Edit"
                     Command="{Binding EditBookCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
             <Button Grid.Column="3"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="🗑️ Delete"
+                    Content="Delete"
                     Command="{Binding DeleteBookCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
@@ -314,15 +314,19 @@
 
         <!-- Add/Edit Dialog Overlay -->
         <Border Grid.Row="0" Grid.RowSpan="4"
-                Background="#80000000"
+                Background="{StaticResource OverlayScrim}"
                 Visibility="{Binding IsAddEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
             <Border Background="{StaticResource CardBackground}"
                     CornerRadius="16"
                     Padding="32"
+                    Margin="24"
                     MaxWidth="600"
                     MaxHeight="700"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.15" />
+                </Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

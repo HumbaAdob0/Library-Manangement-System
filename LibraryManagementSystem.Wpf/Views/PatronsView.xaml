@@ -70,21 +70,21 @@
 
             <Button Grid.Column="1"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="➕ Add Patron"
+                    Content="Add Patron"
                     Command="{Binding AddPatronCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
             <Button Grid.Column="2"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="✏️ Edit"
+                    Content="Edit"
                     Command="{Binding EditPatronCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
             <Button Grid.Column="3"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="🗑️ Delete"
+                    Content="Delete"
                     Command="{Binding DeletePatronCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
@@ -310,9 +310,12 @@
 
         <!-- Add/Edit Dialog Overlay -->
         <Border Grid.Row="0" Grid.RowSpan="4"
-                Background="#80000000"
+                Background="{StaticResource OverlayScrim}"
                 Visibility="{Binding IsDialogOpen, Converter={StaticResource BoolToVisibility}}">
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24">
+            <Border VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="24"
+                    Margin="24">
                 <views:PatronDialog />
             </Border>
         </Border>

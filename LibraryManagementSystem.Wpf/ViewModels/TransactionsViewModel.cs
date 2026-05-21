@@ -245,7 +245,7 @@ public class TransactionsViewModel : ObservableObject
 
             if (!dialog.SelectedBookId.HasValue || !dialog.SelectedPatronId.HasValue)
             {
-                MessageBox.Show("Please select both a book and a patron.", "Checkout", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ThemedMessageBox.Show("Please select both a book and a patron.", "Checkout", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -260,12 +260,12 @@ public class TransactionsViewModel : ObservableObject
             var patronName = dialog.SelectedPatronName ?? "Patron";
             StatusMessage = $"Checked out '{bookTitle}' to {patronName}";
 
-            MessageBox.Show($"Checked out '{bookTitle}' to '{patronName}'.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            ThemedMessageBox.Show($"Checked out '{bookTitle}' to '{patronName}'.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
             StatusMessage = $"Checkout failed: {ex.Message}";
-            MessageBox.Show(ex.Message, "Checkout Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ThemedMessageBox.Show(ex.Message, "Checkout Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -373,7 +373,7 @@ public class TransactionsViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error updating transaction: {ex.Message}";
-            MessageBox.Show(ex.Message, "Edit Transaction", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ThemedMessageBox.Show(ex.Message, "Edit Transaction", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 

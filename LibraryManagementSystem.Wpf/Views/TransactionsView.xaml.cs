@@ -19,7 +19,7 @@ public partial class TransactionsView : UserControl
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error initializing TransactionsView: {ex.Message}");
-                MessageBox.Show($"Error loading transactions: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ThemedMessageBox.Show($"Error loading transactions: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         };
     }

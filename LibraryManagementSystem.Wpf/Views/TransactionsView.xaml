@@ -16,7 +16,7 @@
 
         <!-- Header -->
         <TextBlock Grid.Row="0"
-                   Text="🔄 Transactions Management"
+                   Text="ðŸ”„ Transactions Management"
                    FontSize="24"
                    FontWeight="SemiBold"
                    Margin="0,0,0,16" />
@@ -48,7 +48,7 @@
 
             <Button Grid.Column="3"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="📤 Checkout"
+                    Content="Checkout"
                     Command="{Binding CheckoutCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
@@ -62,7 +62,7 @@
 
             <Button Grid.Column="5"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="📥 Return"
+                    Content="Return"
                     Command="{Binding ReturnCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
@@ -295,15 +295,19 @@
 
         <!-- Edit Transaction Dialog Overlay -->
         <Border Grid.Row="0" Grid.RowSpan="4"
-                Background="#80000000"
+                Background="{StaticResource OverlayScrim}"
                 Visibility="{Binding IsEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
             <Border Background="{StaticResource CardBackground}"
                     CornerRadius="16"
                     Padding="32"
+                    Margin="24"
                     MaxWidth="640"
                     MaxHeight="680"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.15" />
+                </Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

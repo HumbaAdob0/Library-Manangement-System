@@ -37,7 +37,7 @@ public partial class CheckoutDialog : Window
     {
         if (PatronCombo.SelectedItem is not Patron patron || BookCombo.SelectedItem is not Book book)
         {
-            MessageBox.Show("Please select both a patron and a book.", "Checkout", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ThemedMessageBox.Show("Please select both a patron and a book.", "Checkout", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 

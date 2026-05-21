@@ -354,7 +354,7 @@ public class BooksViewModel : ObservableObject
             if (!ISBNHelper.IsValidISBN13(DialogISBN))
             {
                 StatusMessage = "Invalid ISBN-13 format. Must be 13 dash-separated digits";
-                System.Windows.MessageBox.Show(
+                ThemedMessageBox.Show(
                     "Please enter a valid ISBN-13 format.\n\n" +
                     "Format: 123-4-567-89012-3\n" +
                     "Any 13 digits are allowed.",
@@ -372,7 +372,7 @@ public class BooksViewModel : ObservableObject
             if (!isbnIsUnique)
             {
                 StatusMessage = "A book with this ISBN already exists";
-                System.Windows.MessageBox.Show(
+                ThemedMessageBox.Show(
                     "A book with this ISBN already exists. Please use a unique ISBN-13.",
                     "Duplicate ISBN",
                     System.Windows.MessageBoxButton.OK,
@@ -514,7 +514,7 @@ public class BooksViewModel : ObservableObject
         catch (InvalidOperationException ex)
         {
             StatusMessage = $"Cannot delete: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 ex.Message,
                 "Cannot Delete Book",
                 System.Windows.MessageBoxButton.OK,
@@ -523,7 +523,7 @@ public class BooksViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting book: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 $"An unexpected error occurred: {ex.Message}",
                 "Error",
                 System.Windows.MessageBoxButton.OK,
@@ -554,7 +554,7 @@ public class BooksViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Barcode scanner error: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 $"The barcode scanner could not start.\n\n{ex.Message}",
                 "Barcode Scanner",
                 System.Windows.MessageBoxButton.OK,

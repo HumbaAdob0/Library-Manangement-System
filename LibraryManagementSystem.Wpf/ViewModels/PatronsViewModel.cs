@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Views;
 
 namespace LibraryManagementSystem.ViewModels;
 
@@ -318,7 +319,7 @@ public class PatronsViewModel : ObservableObject
         catch (InvalidOperationException ex)
         {
             StatusMessage = $"Cannot delete: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 ex.Message,
                 "Cannot Delete Patron",
                 System.Windows.MessageBoxButton.OK,
@@ -327,7 +328,7 @@ public class PatronsViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting patron: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 $"An unexpected error occurred: {ex.Message}",
                 "Error",
                 System.Windows.MessageBoxButton.OK,

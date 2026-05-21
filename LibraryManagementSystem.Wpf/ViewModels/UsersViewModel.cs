@@ -3,6 +3,7 @@ using System.Windows.Input;
 using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Views;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.ViewModels;
@@ -260,7 +261,7 @@ public class UsersViewModel : ObservableObject
                     !DialogIsActive)
                 {
                     StatusMessage = "Cannot deactivate your own account";
-                    System.Windows.MessageBox.Show(
+                    ThemedMessageBox.Show(
                         "You cannot deactivate your own account while logged in.\n\n" +
                         "To deactivate this account, please log in with a different administrator account.",
                         "Cannot Deactivate Own Account",
@@ -335,7 +336,7 @@ public class UsersViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error saving user: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 $"An error occurred while saving the user:\n\n{ex.Message}",
                 "Error",
                 System.Windows.MessageBoxButton.OK,
@@ -353,7 +354,7 @@ public class UsersViewModel : ObservableObject
             if (_session.CurrentUser != null && SelectedUser.Id == _session.CurrentUser.Id)
             {
                 StatusMessage = "Cannot delete your own account";
-                System.Windows.MessageBox.Show(
+                ThemedMessageBox.Show(
                     "You cannot delete your own account while logged in.\n\n" +
                     "To delete this account, please:\n" +
                     "1. Log in with a different administrator account\n" +
@@ -365,7 +366,7 @@ public class UsersViewModel : ObservableObject
             }
 
             // Confirm deletion
-            var result = System.Windows.MessageBox.Show(
+            var result = ThemedMessageBox.Show(
                 $"Are you sure you want to delete user '{SelectedUser.Username}'?\n\n" +
                 "This action cannot be undone.",
                 "Confirm Deletion",
@@ -397,7 +398,7 @@ public class UsersViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"Error deleting user: {ex.Message}";
-            System.Windows.MessageBox.Show(
+            ThemedMessageBox.Show(
                 $"An error occurred while deleting the user:\n\n{ex.Message}",
                 "Error",
                 System.Windows.MessageBoxButton.OK,

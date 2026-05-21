@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
+using LibraryManagementSystem.Views;
 
 namespace LibraryManagementSystem.ViewModels;
 
@@ -302,7 +303,7 @@ public class SettingsViewModel : ObservableObject
         }
 
         var genre = SelectedGenre;
-        var confirm = MessageBox.Show(
+        var confirm = ThemedMessageBox.Show(
             $"Delete the genre '{genre.Name}'?",
             "Delete Genre",
             MessageBoxButton.YesNo,
@@ -323,7 +324,7 @@ public class SettingsViewModel : ObservableObject
         catch (InvalidOperationException ex)
         {
             GenreStatusMessage = ex.Message;
-            MessageBox.Show(
+            ThemedMessageBox.Show(
                 ex.Message,
                 "Cannot Delete Genre",
                 MessageBoxButton.OK,
