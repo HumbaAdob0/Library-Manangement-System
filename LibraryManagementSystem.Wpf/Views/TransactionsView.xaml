@@ -16,7 +16,7 @@
 
         <!-- Header -->
         <TextBlock Grid.Row="0"
-                   Text="ðŸ”„ Transactions Management"
+                   Text="&#x1F504; Transactions Management"
                    FontSize="24"
                    FontWeight="SemiBold"
                    Margin="0,0,0,16" />
