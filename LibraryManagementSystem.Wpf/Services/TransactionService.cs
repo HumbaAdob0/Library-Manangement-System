@@ -52,6 +52,17 @@ public class TransactionService
             .ToListAsync();
     }
 
+    public async Task<List<Transaction>> GetReturnedTransactionsAsync()
+    {
+        return await _dbContext.Transactions
+            .Include(t => t.Book)
+            .Include(t => t.Patron)
+            .Where(t => t.IsReturned)
+            .OrderByDescending(t => t.ReturnDate)
+            .ThenByDescending(t => t.CheckoutDate)
+            .ToListAsync();
+    }
+
     public async Task<List<Transaction>> GetPatronTransactionsAsync(int patronId)
     {
         return await _dbContext.Transactions
@@ -142,6 +153,75 @@ public class TransactionService
         await _dbContext.SaveChangesAsync();
 
         return transaction;
+    }
+
+    public async Task<Transaction> UpdateTransactionAsync(
+        int transactionId,
+        int bookId,
+        int patronId,
+        DateTime checkoutDate,
+        DateTime dueDate,
+        DateTime? returnDate,
+        decimal fineAmount)
+    {
+        var transaction = await _dbContext.Transactions
+            .FirstOrDefaultAsync(t => t.Id == transactionId);
+
+        if (transaction == null)
+            throw new InvalidOperationException("Transaction not found.");
+
+        var patronExists = await _dbContext.Patrons.AnyAsync(p => p.Id == patronId);
+        if (!patronExists)
+            throw new InvalidOperationException("Patron not found.");
+
+        var oldBook = await _dbContext.Books.FindAsync(transaction.BookId);
+        var newBook = await _dbContext.Books.FindAsync(bookId);
+
+        if (oldBook == null)
+            throw new InvalidOperationException("Original book not found.");
+
+        if (newBook == null)
+            throw new InvalidOperationException("Book not found.");
+
+        if (dueDate.Date < checkoutDate.Date)
+            throw new InvalidOperationException("Due date cannot be before checkout date.");
+
+        if (transaction.IsReturned)
+        {
+            if (!returnDate.HasValue)
+                throw new InvalidOperationException("Return date is required for returned transactions.");
+
+            if (returnDate.Value.Date < checkoutDate.Date)
+                throw new InvalidOperationException("Return date cannot be before checkout date.");
+        }
+
+        if (fineAmount < 0)
+            throw new InvalidOperationException("Fine cannot be negative.");
+
+        var isActiveTransaction = !transaction.IsReturned;
+        var bookChanged = transaction.BookId != bookId;
+
+        if (isActiveTransaction && bookChanged)
+        {
+            if (newBook.AvailableCopies <= 0)
+                throw new InvalidOperationException("The selected book has no available copies.");
+
+            oldBook.AvailableCopies++;
+            newBook.AvailableCopies--;
+        }
+
+        transaction.BookId = bookId;
+        transaction.PatronId = patronId;
+        transaction.CheckoutDate = checkoutDate;
+        transaction.DueDate = dueDate;
+        transaction.ReturnDate = transaction.IsReturned ? returnDate : null;
+        transaction.FineAmount = fineAmount;
+        transaction.UpdatedAt = DateTime.UtcNow;
+
+        await _dbContext.SaveChangesAsync();
+
+        return await GetTransactionByIdAsync(transaction.Id)
+            ?? throw new InvalidOperationException("Transaction could not be loaded after update.");
     }
 
     public async Task<int> GetActiveTransactionCountAsync(int patronId)

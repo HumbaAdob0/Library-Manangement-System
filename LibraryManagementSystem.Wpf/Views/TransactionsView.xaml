@@ -26,39 +26,37 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Content="All"
-                    Command="{Binding ShowAllCommand}"
-                    Width="80"
-                    Height="36" />
+            <TextBlock Grid.Column="0"
+                       Text="Filter"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedText}"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0" />
 
-            <Button Grid.Column="1"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Content="Active"
-                    Command="{Binding ShowActiveCommand}"
-                    Width="80"
-                    Height="36"
-                    Margin="8,0,0,0" />
+            <ComboBox Grid.Column="1"
+                      Style="{StaticResource BentoComboBoxStyle}"
+                      ItemsSource="{Binding FilterOptions}"
+                      SelectedItem="{Binding SelectedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Width="150"
+                      Height="36" />
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="3"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="Overdue"
-                    Command="{Binding ShowOverdueCommand}"
-                    Width="80"
+                    Content="📤 Checkout"
+                    Command="{Binding CheckoutCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
             <Button Grid.Column="4"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="📤 Checkout"
-                    Command="{Binding CheckoutCommand}"
+                    Content="Edit"
+                    Command="{Binding EditTransactionCommand}"
                     Height="36"
                     Margin="8,0,0,0" />
 
@@ -293,6 +291,105 @@
                            HorizontalAlignment="Right"
                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
             </Grid>
+        </Border>
+
+        <!-- Edit Transaction Dialog Overlay -->
+        <Border Grid.Row="0" Grid.RowSpan="4"
+                Background="#80000000"
+                Visibility="{Binding IsEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
+            <Border Background="{StaticResource CardBackground}"
+                    CornerRadius="16"
+                    Padding="32"
+                    MaxWidth="640"
+                    MaxHeight="680"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Edit Transaction"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,24" />
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                        <StackPanel>
+                            <TextBlock Text="Book *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <ComboBox Style="{StaticResource BentoComboBoxStyle}"
+                                      ItemsSource="{Binding AvailableBooks}"
+                                      DisplayMemberPath="Title"
+                                      SelectedValuePath="Id"
+                                      SelectedValue="{Binding DialogBookId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="0,6,0,16" />
+
+                            <TextBlock Text="Patron *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <ComboBox Style="{StaticResource BentoComboBoxStyle}"
+                                      ItemsSource="{Binding AvailablePatrons}"
+                                      DisplayMemberPath="FullName"
+                                      SelectedValuePath="Id"
+                                      SelectedValue="{Binding DialogPatronId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="0,6,0,16" />
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Checkout Date *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                                    <DatePicker SelectedDate="{Binding DialogCheckoutDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Margin="0,6,0,0"
+                                                Height="38" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Due Date *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                                    <DatePicker SelectedDate="{Binding DialogDueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Margin="0,6,0,0"
+                                                Height="38" />
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Margin="0,0,0,16"
+                                        Visibility="{Binding IsSelectedTransactionReturned, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="Return Date *" FontSize="12" Foreground="{StaticResource MutedText}" />
+                                <DatePicker SelectedDate="{Binding DialogReturnDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Margin="0,6,0,0"
+                                            Height="38" />
+                            </StackPanel>
+
+                            <TextBlock Text="Fine" FontSize="12" Foreground="{StaticResource MutedText}" />
+                            <TextBox Style="{StaticResource BentoTextBoxStyle}"
+                                     Text="{Binding DialogFineAmount, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}"
+                                     Margin="0,6,0,0" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0,16,0,0">
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Content="Cancel"
+                                Command="{Binding CancelEditDialogCommand}"
+                                Width="100"
+                                Height="36"
+                                Margin="0,0,8,0" />
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Content="Save"
+                                Command="{Binding SaveTransactionCommand}"
+                                Width="100"
+                                Height="36" />
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Border>
     </Grid>
 </UserControl>

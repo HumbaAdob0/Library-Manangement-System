@@ -172,7 +172,7 @@ public partial class BarcodeScannerWindow : System.Windows.Window
         var formattedISBN = ISBNHelper.FormatISBN13(rawValue);
         if (!ISBNHelper.IsValidISBN13(formattedISBN))
         {
-            StatusTextBlock.Text = "Barcode detected, but it is not a valid ISBN-13.";
+            StatusTextBlock.Text = "Barcode detected, but it is not a 13-digit barcode.";
             return;
         }
 

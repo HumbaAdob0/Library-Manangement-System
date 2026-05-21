@@ -32,33 +32,11 @@ public static class ISBNHelper
     }
 
     /// <summary>
-    /// Validates ISBN-13 dash formatting and checksum.
+    /// Validates the required 13-digit dash-separated format.
     /// </summary>
     public static bool IsValidISBN13(string isbn)
     {
-        if (!FormattedISBN13Regex.IsMatch(isbn))
-            return false;
-
-        var digits = GetDigits(isbn);
-        
-        // Must be exactly 13 digits
-        if (digits.Length != 13)
-            return false;
-        
-        // Must start with 978 or 979
-        if (!digits.StartsWith("978") && !digits.StartsWith("979"))
-            return false;
-        
-        // Validate checksum
-        int sum = 0;
-        for (int i = 0; i < 12; i++)
-        {
-            int digit = int.Parse(digits[i].ToString());
-            sum += (i % 2 == 0) ? digit : digit * 3;
-        }
-        
-        int checkDigit = (10 - (sum % 10)) % 10;
-        return checkDigit == int.Parse(digits[12].ToString());
+        return FormattedISBN13Regex.IsMatch(isbn ?? string.Empty);
     }
 
     public static string GetDigits(string isbn)

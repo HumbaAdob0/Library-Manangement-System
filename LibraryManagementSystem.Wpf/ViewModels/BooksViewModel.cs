@@ -353,11 +353,11 @@ public class BooksViewModel : ObservableObject
 
             if (!ISBNHelper.IsValidISBN13(DialogISBN))
             {
-                StatusMessage = "Invalid ISBN-13 format. Must be 13 digits starting with 978 or 979";
+                StatusMessage = "Invalid ISBN-13 format. Must be 13 dash-separated digits";
                 System.Windows.MessageBox.Show(
                     "Please enter a valid ISBN-13 format.\n\n" +
-                    "Format: 978-0-123-45678-9 (13 digits)\n" +
-                    "Must start with 978 or 979",
+                    "Format: 123-4-567-89012-3\n" +
+                    "Any 13 digits are allowed.",
                     "Invalid ISBN",
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Warning);
