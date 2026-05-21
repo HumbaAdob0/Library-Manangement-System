@@ -4,11 +4,16 @@ A comprehensive Library Management System built with **C# WPF** following the **
 
 ## 🚀 Quick Start
 
-```bash
+```powershell
 # Clone the repository
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
-cd '.\Library Management System\LibraryManagementSystem.Wpf\'
+cd Library-Manangement-System
 
+# Option 1: Run the packaged executable
+cd .\Distribution\LibraryManagementSystem.exe
+
+# Option 2: Run from source
+cd .\LibraryManagementSystem.Wpf\
 # Restore packages
 dotnet restore
 
@@ -19,7 +24,12 @@ dotnet build
 dotnet run
 ```
 
+You can use either the packaged `.exe` in the `Distribution` directory or run the WPF project from source with `dotnet run`.
+
+For a complete usage guide, open [USER_MANUAL.html](USER_MANUAL.html).
+
 **Default Login Credentials:**
+
 - **Admin**: Username: `admin` | Password: `Admin@123`
 - **Librarian**: Username: `librarian` | Password: `Librarian@123`
 
@@ -31,7 +41,7 @@ Before you begin, ensure you have the following installed on your machine:
 
 1. **[.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)** or later
    - Download and install from Microsoft's official website
-   - Verify installation: 
+   - Verify installation:
      ```bash
      dotnet --version
      ```
@@ -51,7 +61,7 @@ Before you begin, ensure you have the following installed on your machine:
 
 4. **Git** (for version control)
    - [Download Git](https://git-scm.com/downloads)
-   - Verify installation: 
+   - Verify installation:
      ```bash
      git --version
      ```
@@ -137,7 +147,7 @@ cd C:\Users\YourUsername\Documents\Projects
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
 
 # Navigate to the project directory
-cd "Library Management System\LibraryManagementSystem.Wpf"
+cd "Library-Manangement-System\LibraryManagementSystem.Wpf"
 ```
 
 ### Step 3: Open Project in VS Code
@@ -148,9 +158,10 @@ code .
 ```
 
 Or manually:
+
 1. Open VS Code
 2. Click `File` → `Open Folder`
-3. Navigate to `Library Management System\LibraryManagementSystem.Wpf`
+3. Navigate to `Library-Manangement-System\LibraryManagementSystem.Wpf`
 4. Click `Select Folder`
 
 ### Step 4: Restore Dependencies
@@ -163,6 +174,7 @@ dotnet restore
 ```
 
 This will install all required packages:
+
 - Microsoft.EntityFrameworkCore.Sqlite (8.0.0)
 - Microsoft.EntityFrameworkCore.Design (8.0.0)
 - Microsoft.Extensions.DependencyInjection (8.0.0)
@@ -178,6 +190,7 @@ dotnet build
 ```
 
 You should see output ending with:
+
 ```
 Build succeeded.
     0 Warning(s)
@@ -186,24 +199,39 @@ Build succeeded.
 
 ### Step 6: Run the Application
 
+**Option A: Run the packaged executable**
+
+From the repository root:
+
+```powershell
+.\Distribution\LibraryManagementSystem.exe
+```
+
+This is the quickest way to launch the system when you only need to use the application.
+
+**Option B: Run from source**
+
 ```bash
 # Run the application
 dotnet run
 ```
 
 The application window should open. Use the default credentials to log in:
+
 - **Admin**: `admin` / `Admin@123`
 - **Librarian**: `librarian` / `Librarian@123`
 
 ### Step 7: Database Setup (Automatic)
 
 The SQLite database (`library.db`) is created automatically on first run with:
+
 - ✅ All required tables (Books, Patrons, Transactions, Fines, Users)
 - ✅ Default users (admin and librarian)
 - ✅ Sample data (8 books, 5 patrons, 2 transactions)
 - ✅ Proper relationships and constraints
 
 **To reset the database:**
+
 ```bash
 # Stop the application (Ctrl+C in terminal)
 # Delete the database file
@@ -216,6 +244,7 @@ dotnet run
 ### Step 8: Verify Installation
 
 After logging in, verify these features work:
+
 1. **📚 Books** - View, search, add, edit, delete books
 2. **👥 Patrons** - Manage library members
 3. **🔄 Transactions** - Checkout and return books
@@ -294,12 +323,14 @@ LibraryManagementSystem.Wpf/
 ### ✅ Completed Features
 
 #### 1. **Authentication System**
+
 - Secure login with BCrypt password hashing
 - Role-based access (Admin, Librarian)
 - Session management
 - Password visibility toggle
 
 #### 2. **Books Management** 📚
+
 - View all books in a searchable data grid
 - Add new books (ISBN, Title, Author, Publisher, Year, Copies)
 - Edit existing book information
@@ -308,6 +339,7 @@ LibraryManagementSystem.Wpf/
 - Track available vs. total copies
 
 #### 3. **Patrons Management** 👥
+
 - View all library members
 - Add new patrons (Full Name, Email, Phone, Address, DOB, Membership Type)
 - Edit patron information
@@ -317,6 +349,7 @@ LibraryManagementSystem.Wpf/
 - Membership types: Standard, Premium, Student
 
 #### 4. **Transactions Management** 🔄
+
 - Checkout books to patrons (14-day default period)
 - Return books with automatic fine calculation
 - View all transactions with filtering:
@@ -327,6 +360,7 @@ LibraryManagementSystem.Wpf/
 - Transaction history with dates
 
 #### 5. **Reports & Analytics** 📊
+
 - **Overview Dashboard** with 4 key metrics:
   - Total books (available vs. checked out)
   - Total patrons (active members)
@@ -338,6 +372,7 @@ LibraryManagementSystem.Wpf/
 - Refresh functionality for latest data
 
 #### 6. **Users & Roles Management** 🔐 (Admin Only)
+
 - View all system users
 - Add new users (Username, Password, Role, Active status)
 - Edit user information
@@ -347,6 +382,7 @@ LibraryManagementSystem.Wpf/
 - Role assignment (Admin/Librarian)
 
 #### 7. **User Interface**
+
 - Modern, clean design with beige theme (#F6F1E7, #EAD9C7)
 - Vertical sidebar navigation with emoji icons
 - Responsive layout
@@ -407,7 +443,7 @@ This project follows **MVVM (Model-View-ViewModel)** pattern with clean architec
 ### Data Flow
 
 ```
-User Interaction → View (XAML) → ViewModel (Commands/Properties) 
+User Interaction → View (XAML) → ViewModel (Commands/Properties)
 → Service Layer → DbContext → SQLite Database
 ```
 
@@ -416,6 +452,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ### Manual Testing Checklist
 
 #### 1. **Login System**
+
 ```
 ✅ Login with admin credentials (admin / Admin@123)
 ✅ Login with librarian credentials (librarian / Librarian@123)
@@ -425,6 +462,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ```
 
 #### 2. **Books Management**
+
 ```
 ✅ View all books
 ✅ Search for a book by title
@@ -435,6 +473,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ```
 
 #### 3. **Patrons Management**
+
 ```
 ✅ View all patrons
 ✅ Search for a patron
@@ -445,6 +484,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ```
 
 #### 4. **Transactions**
+
 ```
 ✅ Checkout a book to a patron
 ✅ Verify available copies decrease
@@ -455,6 +495,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ```
 
 #### 5. **Reports**
+
 ```
 ✅ View overview statistics
 ✅ Check most borrowed books
@@ -465,6 +506,7 @@ User Interaction → View (XAML) → ViewModel (Commands/Properties)
 ```
 
 #### 6. **Users & Roles (Admin Only)**
+
 ```
 ✅ View all users
 ✅ Add a new user
@@ -490,18 +532,26 @@ Use **DB Browser for SQLite** to inspect the database:
 
 #### Running the Application
 
-1. **Using Terminal**:
+1. **Using the packaged executable**:
+
+   ```powershell
+   # From the repository root
+   .\Distribution\LibraryManagementSystem.exe
+   ```
+
+2. **Using Terminal**:
+
    ```bash
    # Open integrated terminal (Ctrl+`)
    dotnet run
    ```
 
-2. **Using Debug**:
+3. **Using Debug**:
    - Press `F5` to start debugging
    - Or click `Run` → `Start Debugging`
    - Set breakpoints by clicking left of line numbers
 
-3. **Hot Reload** (for development):
+4. **Hot Reload** (for development):
    ```bash
    dotnet watch run
    ```
@@ -537,30 +587,35 @@ dotnet build
 Kiro can help you with various development tasks:
 
 #### 1. **Code Generation**
+
 ```
 Ask Kiro: "Create a new service for managing book categories"
 Ask Kiro: "Add a method to calculate late fees for a transaction"
 ```
 
 #### 2. **Debugging**
+
 ```
 Ask Kiro: "Why is my book search not working?"
 Ask Kiro: "Help me fix this null reference exception"
 ```
 
 #### 3. **Refactoring**
+
 ```
 Ask Kiro: "Refactor this method to use async/await"
 Ask Kiro: "Extract this code into a separate service"
 ```
 
 #### 4. **Documentation**
+
 ```
 Ask Kiro: "Add XML documentation to this class"
 Ask Kiro: "Explain what this method does"
 ```
 
 #### 5. **Testing**
+
 ```
 Ask Kiro: "Create unit tests for BookService"
 Ask Kiro: "Generate test data for the database"
@@ -579,25 +634,29 @@ git config --global user.email "your.email@example.com"
 #### Daily Workflow
 
 1. **Check Status**:
+
    ```bash
    git status
    ```
+
    Or use VS Code Source Control panel (`Ctrl+Shift+G`)
 
 2. **Create Feature Branch**:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. **Make Changes and Commit**:
+
    ```bash
    # Stage changes
    git add .
-   
+
    # Commit with message
    git commit -m "feat: add book category feature"
    ```
-   
+
    Or use VS Code Source Control panel:
    - Stage files by clicking `+`
    - Enter commit message
@@ -611,6 +670,7 @@ git config --global user.email "your.email@example.com"
 #### Commit Message Convention
 
 Use conventional commits format:
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation changes
@@ -620,6 +680,7 @@ Use conventional commits format:
 - `chore:` - Maintenance tasks
 
 Examples:
+
 ```bash
 git commit -m "feat: add book search by ISBN"
 git commit -m "fix: correct fine calculation for weekends"
@@ -632,7 +693,7 @@ git commit -m "docs: update README with setup instructions"
 
 - Use **PascalCase** for class names, method names, properties
 - Use **camelCase** for local variables, parameters
-- Use **_camelCase** for private fields
+- Use **\_camelCase** for private fields
 - Add XML documentation for public APIs
 - Use `async/await` for asynchronous operations
 - Enable nullable reference types
@@ -675,7 +736,9 @@ public class BookService : IBookService
 ### Common Issues and Solutions
 
 #### Issue: "dotnet command not found"
+
 **Solution:**
+
 ```bash
 # Verify .NET is installed
 dotnet --version
@@ -685,7 +748,9 @@ dotnet --version
 ```
 
 #### Issue: Build errors after cloning
+
 **Solution:**
+
 ```bash
 # Clean and restore
 dotnet clean
@@ -694,7 +759,9 @@ dotnet build
 ```
 
 #### Issue: "Cannot find library.db"
+
 **Solution:**
+
 ```bash
 # The database is auto-created on first run
 # Just run the application
@@ -706,7 +773,9 @@ dotnet run
 ```
 
 #### Issue: NuGet package restore fails
+
 **Solution:**
+
 ```bash
 # Clear NuGet cache
 dotnet nuget locals all --clear
@@ -719,7 +788,9 @@ dotnet nuget list source
 ```
 
 #### Issue: Application won't start
+
 **Solution:**
+
 1. Check if .NET 10.0 SDK is installed: `dotnet --version`
 2. Verify you're in the correct directory: `LibraryManagementSystem.Wpf`
 3. Check for build errors: `dotnet build`
@@ -732,7 +803,9 @@ dotnet nuget list source
    ```
 
 #### Issue: Login not working
+
 **Solution:**
+
 - Verify credentials:
   - Admin: `admin` / `Admin@123`
   - Librarian: `librarian` / `Librarian@123`
@@ -744,7 +817,9 @@ dotnet nuget list source
   ```
 
 #### Issue: VS Code C# extension not working
+
 **Solution:**
+
 1. Restart VS Code
 2. Reinstall C# Dev Kit extension
 3. Check Output panel (`View` → `Output`) for errors
@@ -752,7 +827,9 @@ dotnet nuget list source
 5. Reload window: `Ctrl+Shift+P` → "Reload Window"
 
 #### Issue: Changes not reflecting in running app
+
 **Solution:**
+
 ```bash
 # Stop the application (Ctrl+C)
 # Rebuild
@@ -765,7 +842,9 @@ dotnet watch run
 ```
 
 #### Issue: Database locked error
+
 **Solution:**
+
 - Close all instances of the application
 - Close DB Browser for SQLite if open
 - Restart the application
@@ -793,7 +872,7 @@ If you encounter issues not listed here:
 - **Authentication**: BCrypt.Net-Next 4.0.3 for password hashing
 - **Dependency Injection**: Microsoft.Extensions.DependencyInjection 8.0.0
 - **Configuration**: Microsoft.Extensions.Configuration.Json 8.0.0
-- **Development Tools**: 
+- **Development Tools**:
   - Visual Studio Code
   - Kiro AI Assistant
   - Git for version control
@@ -812,6 +891,7 @@ If you encounter issues not listed here:
 ## 🎯 Project Status
 
 ### ✅ Completed (Phase 1 & 2)
+
 - ✅ Core infrastructure and architecture
 - ✅ Database with EF Core and SQLite
 - ✅ Authentication system with role-based access
@@ -828,11 +908,13 @@ If you encounter issues not listed here:
 - ✅ Sample data seeding
 
 ### 🚧 In Progress (Phase 3)
+
 - 🚧 Settings page
 - 🚧 Fine payment processing
 - 🚧 Advanced search features
 
 ### 📋 Planned (Phase 4)
+
 - 📋 Book reservations
 - 📋 Email notifications
 - 📋 Export reports (PDF/Excel)
@@ -866,6 +948,7 @@ We welcome contributions! Here's how you can help:
    - Install Kiro for AI assistance
 
 3. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -876,6 +959,7 @@ We welcome contributions! Here's how you can help:
    - Test your changes thoroughly
 
 5. **Commit and Push**
+
    ```bash
    git add .
    git commit -m "feat: add your feature description"
@@ -896,12 +980,12 @@ We welcome contributions! Here's how you can help:
 public class BookService
 {
     private readonly LibraryDbContext _context;
-    
+
     public BookService(LibraryDbContext context)
     {
         _context = context;
     }
-    
+
     /// <summary>
     /// Retrieves all books from the database.
     /// </summary>
@@ -915,7 +999,7 @@ public class BookService
 public class bookservice
 {
     private LibraryDbContext context;
-    
+
     public List<Book> GetBooks()
     {
         return context.Books.ToList(); // Not async
@@ -924,14 +1008,16 @@ public class bookservice
 ```
 
 **Naming Conventions:**
+
 - **PascalCase**: Classes, methods, properties, public fields
   - `BookService`, `GetAllBooksAsync`, `TotalBooks`
 - **camelCase**: Local variables, parameters
   - `bookId`, `patronName`, `searchText`
-- **_camelCase**: Private fields
+- **\_camelCase**: Private fields
   - `_context`, `_dbContext`, `_isLoading`
 
 **Best Practices:**
+
 - ✅ Use `async/await` for all database operations
 - ✅ Add XML documentation comments for public APIs
 - ✅ Use nullable reference types (`string?`)
@@ -957,6 +1043,7 @@ public class bookservice
 ```
 
 **XAML Conventions:**
+
 - ✅ Use PascalCase for x:Name attributes
 - ✅ Organize properties: Name, Style, Content, Binding, Layout
 - ✅ Use proper indentation (4 spaces)
@@ -966,12 +1053,14 @@ public class bookservice
 ### Pull Request Guidelines
 
 **Good PR Title Examples:**
+
 - `feat: add book category management`
 - `fix: correct fine calculation for weekends`
 - `docs: update setup instructions`
 - `refactor: improve transaction service performance`
 
 **PR Description Should Include:**
+
 - What changes were made
 - Why the changes were necessary
 - How to test the changes
@@ -1032,6 +1121,7 @@ This project is for educational purposes as part of the Library Management Syste
 ### Contact
 
 For questions or support:
+
 - **GitHub Issues**: [Create an issue](https://github.com/HumbaAdob0/Library-Manangement-System/issues/new)
 - **Discussions**: [GitHub Discussions](https://github.com/HumbaAdob0/Library-Manangement-System/discussions)
 
@@ -1039,10 +1129,16 @@ For questions or support:
 
 ## 🚀 Quick Command Reference
 
-```bash
+```powershell
 # Setup
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
-cd "Library Management System/LibraryManagementSystem.Wpf"
+cd Library-Manangement-System
+
+# Packaged app
+.\Distribution\LibraryManagementSystem.exe  # Run executable from repo root
+
+# Source app
+cd .\LibraryManagementSystem.Wpf\
 dotnet restore
 dotnet build
 
@@ -1072,4 +1168,4 @@ dotnet nuget locals all --clear  # Clear NuGet cache
 
 **Happy Coding!** 🚀
 
-*Built with ❤️ using C#, WPF, VS Code, and Kiro AI*
+_Built with ❤️ using C#, WPF, VS Code, and Kiro AI_
