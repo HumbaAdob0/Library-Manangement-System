@@ -9,8 +9,9 @@ A comprehensive Library Management System built with **C# WPF** following the **
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
 cd Library-Manangement-System
 
-# Option 1: Run the packaged executable
-cd .\Distribution\LibraryManagementSystem.exe
+# Option 1: Generate and run the packaged executable
+.\CREATE_DISTRIBUTION.bat
+.\Distribution\LibraryManagementSystem.exe
 
 # Option 2: Run from source
 cd .\LibraryManagementSystem.Wpf\
@@ -24,7 +25,7 @@ dotnet build
 dotnet run
 ```
 
-You can use either the packaged `.exe` in the `Distribution` directory or run the WPF project from source with `dotnet run`.
+The `Distribution` directory is generated locally and is not included in the repository because the packaged executable exceeds GitHub's 100 MB file size limit. Run `CREATE_DISTRIBUTION.bat` first if you want to use the packaged `.exe`, or run the WPF project from source with `dotnet run`.
 
 For a complete usage guide, open [USER_MANUAL.html](USER_MANUAL.html).
 
@@ -146,15 +147,15 @@ cd C:\Users\YourUsername\Documents\Projects
 # Clone the repository
 git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
 
-# Navigate to the project directory
-cd "Library-Manangement-System\LibraryManagementSystem.Wpf"
+# Navigate to the repository root
+cd "Library-Manangement-System"
 ```
 
 ### Step 3: Open Project in VS Code
 
 ```bash
-# Open the project in VS Code
-code .
+# Open the WPF project in VS Code
+code .\LibraryManagementSystem.Wpf
 ```
 
 Or manually:
@@ -197,17 +198,18 @@ Build succeeded.
     0 Error(s)
 ```
 
-### Step 6: Run the Application
+### Step 6: Generate the Distribution Package and Run the Application
 
-**Option A: Run the packaged executable**
+**Option A: Generate and run the packaged executable**
 
 From the repository root:
 
 ```powershell
+.\CREATE_DISTRIBUTION.bat
 .\Distribution\LibraryManagementSystem.exe
 ```
 
-This is the quickest way to launch the system when you only need to use the application.
+This creates the local `Distribution` folder and then launches the packaged application. The generated folder should stay out of the repository because the executable is larger than GitHub's 100 MB file size limit.
 
 **Option B: Run from source**
 
@@ -532,10 +534,11 @@ Use **DB Browser for SQLite** to inspect the database:
 
 #### Running the Application
 
-1. **Using the packaged executable**:
+1. **Generating and using the packaged executable**:
 
    ```powershell
    # From the repository root
+   .\CREATE_DISTRIBUTION.bat
    .\Distribution\LibraryManagementSystem.exe
    ```
 
@@ -1135,7 +1138,8 @@ git clone https://github.com/HumbaAdob0/Library-Manangement-System.git
 cd Library-Manangement-System
 
 # Packaged app
-.\Distribution\LibraryManagementSystem.exe  # Run executable from repo root
+.\CREATE_DISTRIBUTION.bat                  # Generate Distribution locally
+.\Distribution\LibraryManagementSystem.exe # Run executable from repo root
 
 # Source app
 cd .\LibraryManagementSystem.Wpf\
