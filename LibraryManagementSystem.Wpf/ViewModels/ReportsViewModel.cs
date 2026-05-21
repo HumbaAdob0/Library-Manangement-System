@@ -41,9 +41,9 @@ public class ReportsViewModel : ObservableObject
         _recentTransactions = new ObservableCollection<Transaction>();
         _overdueBooks = new ObservableCollection<Transaction>();
 
-        // Default to last 30 days
-        _endDate = DateTime.Today;
-        _startDate = _endDate.AddDays(-30);
+        // Default to all time (no date filtering)
+        _endDate = DateTime.MaxValue;
+        _startDate = DateTime.MinValue;
 
         LoadReportsCommand = new AsyncRelayCommand(LoadReportsAsync);
         RefreshCommand = new AsyncRelayCommand(LoadReportsAsync);
